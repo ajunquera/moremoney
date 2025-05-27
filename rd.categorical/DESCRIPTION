@@ -1,0 +1,10 @@
+Package: rd.categorical
+Title: Regression Discontinuity Design for Categorical Outcomes
+Version: 1.0.0
+Authors@R: person("Ke-Li", "Xu", email = "keli.xu15@gmail.com", role = c("aut", "cre"))
+Description: The package provides the optiaml bandwidth, point estimates and robust tests and confidence intervals for the (sharp) regression discontinuity design when the dependent variable takes discrete values (unordered or ordered)
+Depends: R (>= 3.3.1), nnet
+License: GPL-2, GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
