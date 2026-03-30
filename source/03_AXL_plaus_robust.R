@@ -1,6 +1,6 @@
 # ...............................................................................
 # ASSEGNO PER IL LAVORO - 03 Plausibility and robustness
-# Author: Álvaro F. Junquera (UAB)
+# Author: Álvaro F. Junquera
 # ...............................................................................
 
 library(tidyverse)
@@ -13,6 +13,8 @@ library(descr)
 
 library(QTE.RD)
 library(rd.categorical) # package by Ke-Li Xu (2017), follow "installingXuR.R" to install it
+
+library(RATest)
 
 library(glue)
 
@@ -278,6 +280,7 @@ summary(le_val1_prewd16_2)
 
 
 #### Balance in pretreatment variables ----------------
+
 ## Continuous outcome variables (age)
 val1_age <- rdrobust(
   y = indi_ns_ss1$eta, x = indi_ns_ss1$scoringD1_0,
@@ -805,7 +808,23 @@ v1u_sTA <- rdrobust(
 )
 summary(v1u_sTA)
 
-##### Export ---------------
+#### Canay and Kamat (2017) -------------
+set.seed(101)
+permtest <- RDperm(W = "eta", z = "scoringD1_0",
+                   data = indi_ns_ss1)
+summary(permtest)
+
+permtest_rot <- RDperm(W = c("eta", "sex_f", "foreign",
+                             "elementare", "media", "qualifica", "diploma",
+                             "laurea", "disa", "o2I", "o3T", "o4WLS", "o6BHS",
+                             "o7BMS", "o8NS", "oX", "sAE", "sAS", "sCTL",
+                             "sC", "sIL", "sMII", "sMM", "sX", "sSP", "sTA"),
+                       z = "scoringD1_0", data = indi_ns_ss1)
+summary(permtest_rot)
+
+
+
+#### Export ---------------
 tidy.rdrobust <- function(model, ...) {
   ret <- data.frame(
     term = row.names(model$coef),
@@ -1242,7 +1261,22 @@ vd2u_sTA <- rdrobust(
 )
 summary(vd2u_sTA)
 
-##### Export -------------
+#### Canay and Kamat (2017) -------------
+set.seed(102)
+permtest2 <- RDperm(W = "eta", z = "scoringD2_0",
+                   data = indi_ns_ss2)
+summary(permtest2)
+
+permtest_rot2 <- RDperm(W = c("eta", "sex_f", "foreign",
+                             "elementare", "media", "qualifica", "diploma",
+                             "laurea", "disa", "o2I", "o3T", "o4WLS", "o5WHS", "o6BHS",
+                             "o7BMS", "o8NS", "oX", "sAE", "sAS", "sCTL",
+                             "sC", "sIL", "sMII", "sMM", "sX", "sSP", "sTA"),
+                       z = "scoringD2_0", data = indi_ns_ss2)
+summary(permtest_rot2)
+
+
+#### Export -------------
 pretable_E2_d2 <- modelsummary(list(vd2u_age, vd2u_sexF, vd2u_foreignF, vd2u_disaF,
                                     vd2u_elementareF, vd2u_mediaF, vd2u_qualificaF, vd2u_diplomaF, vd2u_laureaF,
                                     vd2u_o2, vd2u_o3, vd2u_o4, vd2u_o5, vd2u_o6, vd2u_o7, vd2u_o8, vd2u_oX,
@@ -1282,9 +1316,9 @@ pretable_E2_d2_vest$D2[1] <- paste0(pretable_E2_d2_vest$D2[1], " (", asd_age_d2,
 ## Export all
 table_E2 <- left_join(pretable_E2_d1_vest, pretable_E2_d2_vest, by = "var_cat")
 
-if (!file.exists("intermediate/script03/T_E2_balance.xlsx")) {
+if (!file.exists("intermediate/script03/T_balance.csv")) {
 
-  openxlsx::write.xlsx(table_E2, 'intermediate/script03/T_E2_balance.xlsx')
+  write_csv(table_E2, 'intermediate/script03/T_balance.csv')
 
 }
 
@@ -1417,11 +1451,33 @@ tableE1b <- data.frame(parameter = c("D_1", "SE", "P-value", "Kernel", "Poly. de
 
 tableE1 <- bind_cols(tableE1a, LQTE05_Ym1 = tableE1b$LQTE05_Ym1)
 
-if (!file.exists("intermediate/script03/T_E1_pseudotreatments.xlsx")) {
+if (!file.exists("intermediate/script03/T_pseudotreatments.csv")) {
 
-  openxlsx::write.xlsx(tableE1, 'intermediate/script03/T_E1_pseudotreatments.xlsx')
+  write_csv(tableE1, 'intermediate/script03/T_pseudotreatments.csv')
 
 }
+
+tableE1$LATE_Ym1[2] <- paste0("(", tableE1$LATE_Ym1[2], ")")
+tableE1$LQTE05_Ym1[2] <- " "
+
+tableE1$LATE_Ym1[7] <- paste0("(", tableE1$LATE_Ym1[7], ")")
+tableE1$LQTE05_Ym1[7] <- " "
+
+table_pseudo_compact <- tableE1 %>%
+  mutate(
+    across(LATE_Ym1:LQTE05_Ym1, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      row_number() == 6 ~ str_c(.x[row_number() %in% c(6,7)], collapse = "<br>"),
+      TRUE ~ .x
+    ))
+  ) %>%
+  slice(-c(2,7))
+
+table_pseudo_compact$LQTE05_Ym1[1] <- tableE1$LQTE05_Ym1[1]
+table_pseudo_compact$LQTE05_Ym1[5] <- tableE1$LQTE05_Ym1[6]
+
+write_csv(table_pseudo_compact, "intermediate/script03/table_pseudo_compact.csv")
+
 
 # 3. ROBUSTNESS checks ----------------
 
@@ -1459,12 +1515,12 @@ rdd_2_D1ei6_p2kT <- rdrobust(
 summary(rdd_2_D1ei6_p2kT)
 
 
-if (!file.exists("intermediate/script03/E15_2bws_D1_Y1.docx")) {
+if (!file.exists("intermediate/script03/E15_2bws_D1_Y1.csv")) {
 
   modelsummary(list(rdd_2_D1ei6_p1kT, rdd_2_D1ei6_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E15_2bws_D1_Y1.docx")
+               output = "intermediate/script03/E15_2bws_D1_Y1.csv")
 }
 
 
@@ -1484,12 +1540,12 @@ rdd_2_D1ei12_p2kT <- rdrobust(
 )
 summary(rdd_2_D1ei12_p2kT)
 
-if (!file.exists("intermediate/script03/E16_2bws_D1_Y2.docx")) {
+if (!file.exists("intermediate/script03/E16_2bws_D1_Y2.csv")) {
 
   modelsummary(list(rdd_2_D1ei12_p1kT, rdd_2_D1ei12_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E16_2bws_D1_Y2.docx")
+               output = "intermediate/script03/E16_2bws_D1_Y2.csv")
 }
 
 
@@ -1508,12 +1564,12 @@ rdd_2_D1ei18_p2kT <- rdrobust(
 )
 summary(rdd_2_D1ei18_p2kT)
 
-if (!file.exists("intermediate/script03/E17_2bws_D1_Y3.docx")) {
+if (!file.exists("intermediate/script03/E17_2bws_D1_Y3.csv")) {
 
   modelsummary(list(rdd_2_D1ei18_p1kT, rdd_2_D1ei18_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E17_2bws_D1_Y3.docx")
+               output = "intermediate/script03/E17_2bws_D1_Y3.csv")
 }
 
 
@@ -1533,12 +1589,12 @@ rdd_2_24_p2kT <- rdrobust(
 summary(rdd_2_24_p2kT)
 
 
-if (!file.exists("intermediate/script03/E18_2bws_D1_Y4.docx")) {
+if (!file.exists("intermediate/script03/E18_2bws_D1_Y4.csv")) {
 
   modelsummary(list(rdd_2_24_p1kT, rdd_2_24_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E18_2bws_D1_Y4.docx")
+               output = "intermediate/script03/E18_2bws_D1_Y4.csv")
 }
 
 
@@ -1688,12 +1744,12 @@ rdd_2_d2_ei6_p2kT <- rdrobust(
 )
 summary(rdd_2_d2_ei6_p2kT)
 
-if (!file.exists("intermediate/script03/E19_2bws_D2_Y1.docx")) {
+if (!file.exists("intermediate/script03/E19_2bws_D2_Y1.csv")) {
 
   modelsummary(list(rdd_2_d2_ei6_p1kT, rdd_2_d2_ei6_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E19_2bws_D2_Y1.docx")
+               output = "intermediate/script03/E19_2bws_D2_Y1.csv")
 }
 
 
@@ -1712,12 +1768,12 @@ rdd_2_d2_ei12_p2kT <- rdrobust(
 )
 summary(rdd_2_d2_ei12_p2kT)
 
-if (!file.exists("intermediate/script03/E20_2bws_D2_Y2.docx")) {
+if (!file.exists("intermediate/script03/E20_2bws_D2_Y2.csv")) {
 
   modelsummary(list(rdd_2_d2_ei12_p1kT, rdd_2_d2_ei12_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E20_2bws_D2_Y2.docx")
+               output = "intermediate/script03/E20_2bws_D2_Y2.csv")
 }
 
 
@@ -1736,12 +1792,12 @@ rdd_2_d2_ei18_p2kT <- rdrobust(
 )
 summary(rdd_2_d2_ei18_p2kT)
 
-if (!file.exists("intermediate/script03/E21_2bws_D2_Y3.docx")) {
+if (!file.exists("intermediate/script03/E21_2bws_D2_Y3.csv")) {
 
   modelsummary(list(rdd_2_d2_ei18_p1kT, rdd_2_d2_ei18_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E21_2bws_D2_Y3.docx")
+               output = "intermediate/script03/E21_2bws_D2_Y3.csv")
 }
 
 
@@ -1760,12 +1816,12 @@ rdd_2_d2_24_p2kT <- rdrobust(
 )
 summary(rdd_2_d2_24_p2kT)
 
-if (!file.exists("intermediate/script03/E22_2bws_D2_Y4.docx")) {
+if (!file.exists("intermediate/script03/E22_2bws_D2_Y4.csv")) {
 
   modelsummary(list(rdd_2_d2_24_p1kT, rdd_2_d2_24_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script03/E22_2bws_D2_Y4.docx")
+               output = "intermediate/script03/E22_2bws_D2_Y4.csv")
 }
 
 
@@ -2123,9 +2179,9 @@ container_lqte_d1$y4[6] <- round(bwd1o4_min2, 3)
 
 #### Saving and exporting
 
-if (!file.exists("intermediate/script03/E23a_LQTE_secondbw.xlsx")) {
+if (!file.exists("intermediate/script03/E23a_LQTE_secondbw.csv")) {
 
-  openxlsx::write.xlsx(container_lqte_d1, 'intermediate/script03/E23a_LQTE_secondbw.xlsx')
+  write_csv(container_lqte_d1, 'intermediate/script03/E23a_LQTE_secondbw.csv')
 
 }
 
@@ -2341,9 +2397,9 @@ container_lqte_d2$y4[6] <- round(bwd2o4_min2, 3)
 
 ### Saving and exporting
 
-if (!file.exists("intermediate/script03/E23b_LQTE_secondbw.xlsx")) {
+if (!file.exists("intermediate/script03/E23b_LQTE_secondbw.csv")) {
 
-  openxlsx::write.xlsx(container_lqte_d2, 'intermediate/script03/E23b_LQTE_secondbw.xlsx')
+  write_csv(container_lqte_d2, 'intermediate/script03/E23b_LQTE_secondbw.csv')
 
 }
 
@@ -2506,12 +2562,25 @@ table_qualityD2 <- data.frame(
 
 tablequality <- rbind(table_qualityD1, table_qualityD2)
 
-if (!file.exists("intermediate/script03/E24_LTEj_binarized.xlsx")) {
+if (!file.exists("intermediate/script03/LTEj_binarized.csv")) {
 
-  openxlsx::write.xlsx(tablequality, 'intermediate/script03/E24_LTEj_binarized.xlsx')
+  write_csv(tablequality, 'intermediate/script03/LTEj_binarized.csv')
 
 }
 
+table_latejbin_compact <- tablequality %>%
+  mutate(
+    across(prOEC:prFTCme6, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      row_number() == 3 ~ str_c(.x[row_number() %in% c(3,4)], collapse = "<br>"),
+      TRUE ~ .x
+    ))
+  ) %>%
+  slice(-c(2,4))
+
+if (!file.exists("intermediate/script02/table_latejbin_compact.csv")) {
+  write_csv(table_latejbin_compact, "intermediate/script02/table_latejbin_compact.csv")
+}
 
 #### Robustness to alternative outcome variable -----------------
 

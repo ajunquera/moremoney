@@ -1,0 +1,929 @@
+---
+title: "Supplementary material"
+format:
+  aea-pdf:
+    keep-tex: true
+    journal:
+      blinded: false
+    indent: true
+    citecolor: blue
+    linkcolor: blue
+    urlcolor: blue
+    cite-method: citeproc
+    link-citations: true # needed to add links to references when using citeproc!
+    csl: springer-basic-author-date-no-et-al.csl # apa.csl for apa
+    include-in-header:
+      text: |
+        \usepackage{etoolbox}
+        \pretocmd{\subsection}{\clearpage\FloatBarrier}{}{}
+        \usepackage{placeins}
+  aea-html: default
+fig-cap-location: top
+bibliography: axl_supplementary.bib
+---
+
+## A. Descriptive statistics of our sample
+
+@tbl-summary characterizes our sample by offering some summary statistics on sociodemographic and labour market variables. We see that the mean age in the pooled sample is 44 years old, being almost perfectly balanced in sex terms and with a remarkable presence of foreign people (22.3 %). The level of educational attainment with more prevalence is lower secondary, with 4 out of 10 participants having this level. There is also a great presence of people with technical education at the upper secondary level (32 %). This distribution of educational credentials fits with the distribution of last occupations, due to the high prevalence of low skilled occupations. Furthermore, notice the non-negligible proportion of people that according to our sample did not have any job in the previous three years (those with unobserved occupation, that is, the 23.2 %). As expected due to the structural equation of the score, categories that better predicts unemployment are more present in group $C$.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-summary
+#| tbl-cap: Summary statistics on pretreatment variables.
+
+library(tidyverse)
+library(tinytable)
+
+here::i_am("manuscript/manuscript.qmd")
+
+table2 <- read_delim(here::here('intermediate/script01/summaryftable.csv')) %>%
+  mutate(variable = case_when(variable == "age" ~ "Age",
+                              variable == "sex_w" ~ "Sex (Woman)",
+                              variable == "foreign" ~ "Foreign (Yes)",
+                              variable == "disability" ~ "Disability (Yes)",
+                              TRUE ~ variable)) %>%
+  filter(variable != "n") %>%
+  select(-`...1`)
+
+table2 %>%
+  tt(notes = "Note: Each cell indicates the proportion by column (qualitative variables) or the mean (quantitative variables). Level of studies according to ISCED-A-11 and occupations according to ISCO-08. $n=32403$, $n_A = 11479$,  $n_B = 10769$, $n_C = 10155$.") %>%
+  setNames(c("", "$A$", "$B$", "$C$", "All")) %>%
+  group_tt(i = list("Level of educational attainment" = 5, "Last occupation" = 11)) %>%
+  style_tt(align = "lcccc")
+```
+
+
+## B. Treatment received as a function of the score {.unnumbered}
+
+The dataset used in this article is the product of joining five data extractions from the PES of Veneto. Some checks were performed before determining the definitive dataset. In one of these checks, we verified that the column of the original score was the same for each unit (the individual participation, i.e. $i \times t$) in the first and the second dataset. In 339 out of the 40,998 units, the values did not coincide. Our interpretation was that the database could register more than one profiling (model prediction) for each individual and date. This could happen if the caseworker made a mistake annotating the values of the variables the first time and run it a second time with the proper values. Moreover, the 339 cases suggest that the data extraction routine did not request a certain case (model prediction) following a certain rule, but probably in a random way. For this reason, since we do not know which of these profiling was the latest and probably the one used for treatment assignment, we removed all these 339 cases from the sample.
+
+Once we performed this data quality check, we can safely plot the treatment received as a function of the score. To address the discreteness of the treatment variable, we present both a scatter plot (left) and a jitter plot (right). The plots in @fig-scatterjitter present the treatment received and the reversed score with two vertical lines indicating the cutoffs in which the treatment should change. We see that there are three dots that violate the treatment assignment rule, two in the high-dose group ($C$) with a score lower than expected and one in the intermediate-dose group ($B$) with a score higher than expected. The jitter plot allows us to verify that these dots only represent 3 units out of the total of 40,659 units in the sample. In other words, 99.99 % of the sample respects the treatment assignment rule. In sum, there is a low number of units that seem to have violated the assignment rule and the PES had problems managing the database expressed in the previous paragraph. For these reasons, we attribute these three units to measurement error and believe that @fig-scatterjitter validates the sharp regression discontinuity strategy once we remove these three units.
+
+::: {#fig-scatterjitter layout-ncol=2}
+![](../intermediate/script01/scatterplot.pdf)
+
+![](../intermediate/script01/jitterplot.pdf)
+
+Treatment received as a function of the score in a scatter plot (left) and a jitter plot (right).
+:::
+
+\clearpage
+## C. Description of variables {.unnumbered}
+
+### 1. Outcome variables {.unnumbered}
+**Hours of treatment uptake** (quantitative; $Y_{HS}$, $Y_{HT}$). The variable on the number of hours of job search assistance ($Y_{HS}$) collects the actual number of hours received, whereas the variable for adult training measures ($Y_{HT}$) records the planned number of training hours. The public employment service of Veneto has not data on the actual reception of training hours.
+
+**Days worked as salaried employee at semester $t$** (quantitative; $Y_1$, $Y_2$, $Y_3$,$Y_4$). This variable gathers the number of days worked as salaried employment, not as self-employment, in a certain semester. Specifically, we observe it as semesters +1, +2, +3, and +4 since the beginning of the treatment. Notice that it only registers the days actually worked or, in other words, the working days under active labour relationships.
+
+**Type of employment contract of the longest employment** (qualitative, ordered; $Y_{OEC}$, $Y_{FTCm12}$, $Y_{FTC612}$, $Y_{FTC05}$). This variable collects the type of employment contract associated to the employment spell with the longest expected duration during the time interval initiated from the beginning of the treatment to 24 months later. Note that this is the declared duration of a contract and not its actual duration. Open-ended contracts have an expected duration of $\infty$ days. This variable has five possible values: open-ended contract, fixed-term contract with expected duration of more than 12 months, fixed-term contract with expected duration of [6, 12] months, fixed-term contract with expected duration of less than 6 months, no employment. Then, it is a variable that gathers the expected duration of the contract regardless of the specific Italian name of such contract. For instance, this means that the category “open-ended contract” not only includes “contratto tempo indeterminato”, but also the open-ended version of the “contratto domestico”.
+
+**Type of employment contract of the awarded employment** (qualitative, ordered; $Y_{pOEC}$, $Y_{pFTCm12}$, $Y_{pFTC612}$). This variable indicates the type of employment contract that triggered the performance pay received by the provider (if any). We follow the same classification of employment contracts that we used for the outcome “type of employment contract of the longest employment”.
+
+**Participation in AXL** (qualitative, unordered; $P$). This variable registers if the individual finally spent any money for the treatments endowed by AXL and the ID of the organization that acted as service provider. Thereby, this variable has 97 possible values, which are all the integer numbers from 0 to 96. Number 0 represents “non-participation” and numbers from 1 to 96 are the IDs of the providers. For the analyses of Section 4.3, we stratified the sample according to the value of this variable, so there was no variability in each stratum.
+
+### 2. Treatment variables {.unnumbered}
+We propose to proxy the intensity of an intervention not only with the duration of actions, but also with the money invested to increase the effort of the providers. This reconciles the meaning it has in the micro and the macro literatures of ALMP [@creponberg2016; @martin2015].
+
+**Intermediate intensity treatment** (qualitative, ordered; $D_1$). This variable collects if the individual is assigned to the active treatment of intermediate intensity (1, group $B$) or if she/he is assigned to the control treatment of low intensity (0, group $A$). It is only defined for those individuals with $s \le 0.6$. 
+
+**High intensity treatment** (qualitative, ordered; $D_2$). This variable collects if the individual is assigned to the active treatment of high intensity (1, group $B$) or if she/he is assigned to the control treatment of intermediate intensity (0, group $A$). It is only defined for those individuals with $s \ge 0.41$. 
+
+In the article, we presented the treatment features of the reformed version that was passed in April 2019. The original version had two minor changes: (1) the maximum duration was 2 months higher for group $B$ and 3 months higher for group $C$, and (2) the training amount was 554 € lower for each group. Note that there are not data about internships participation, but we think that it might have been low. Internships in Veneto do not require an employment contract, but they force the payment of a stipend to the worker. In case the provider assumed this payment in advance, it would not get the money back unless the participant signs an employment contract lasting at least six months. This would entail a significant risk of increased expenditure for the provider.
+
+### 3. Confounding variables {.unnumbered}
+**Scoring variable** (quantitative; $S$). The score output by the statistical profiling model used by the Veneto public employment service to allocate people into treatment groups. It is a function of the following variables: sex, age, foreign nationality, level of studies, having a disability, termination reason of the last job, major group of occupation of the last job, and sector of the company of the last job.
+
+### 4. Additional variables {.unnumbered}
+**Age** (quantitative). Number of years old at the date the individual got the voucher of AXL.
+
+**Sex** (qualitative, unordered). Sex of the participant, either man or woman.
+
+**Foreign** (qualitative, unordered). It collects if the individual has the Italian citizenship or not.
+
+**Disability** (qualitative, unordered). It gathers if the participant has any type of disability.
+
+**Level of educational attainment** (qualitative, unordered). It includes the Italian name of the credential assigned to the highest level of educational attainment of the participant. We can then convert it to the ISCED-A classification of levels of education.
+
+**Last occupation of last job** (qualitative, unordered). It registers the occupation that the individual had in its last employment contract before participating in AXL. Originally, it was written using the Italian classification of occupations called CP2011. We may then convert it to ISCO-08. 
+
+**Industry of last job** (qualitative, unordered). This variable collects the industry of the last job using the ATECO 2007, the Italian classification of economic activities. To simplify it, we have converted it to the second level of the classification of economic activities used in Veneto Lavoro (the Veneto PES), which may be found [here](https://www.venetolavoro.it/glossario-e-strumenti). 
+
+\clearpage
+## D. Heterogeneity analyses {.unnumbered}
+In this section, we vary the population of interest through pre-specified subgroup analyses. The heterogeneity analyses consider that the effect might vary by individual, which could be an alternative explanation for the null estimates of the $LATE$ or the $LQTE$.
+
+In subgroup analyses, we have studied how the estimates of $LATE$ and $LATE_j$ change when we focus on strata of the population defined by sex, age, level of education, or implementation during the COVID-19 pandemic. For the first treatment comparison ($D_1$), the lack of statistically significant effects is still prevalent with a pair of exceptions according to the level of education. Regarding age, we distinguish between individuals above and below 50 years old given the concurrent implementation of a policy in Italy that subsidizes social security contributions for long-term unemployed workers over that age [@pacificoetal2018]. We find a gain of 20-25 days of employment during the second year for the jobseekers with upper secondary education located in group $B$ (intermediate endowment) instead of group $A$ (low endowment)[^1]. This is the unique subgroup in which we find non-zero effects for this active treatment. 
+
+[^1]: This increase is not caused by an increase in the treatment uptake according to the results of subsequent analyses.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-subgroupd1
+#| tbl-cap: !expr sprintf("Subgroup analysis for $D_1$")
+
+table_subgroup_d1 <- read_csv(here::here('intermediate/script04/subgroupD1all_compact.csv')) %>%
+  select(-"...1") %>%
+  mutate(subgroup = case_when(subgroup == "Age >= 50" ~ "Age $\\ge$ 50",
+                              subgroup == "Age < 50" ~ "Age $<$ 50",
+                              subgroup == "Date < COVID-19" ~ "Date $<$ COVID-19",
+                              subgroup == "Date >= COVID-19" ~ "Date $\\ge$ COVID-19",
+                              TRUE ~ subgroup))
+
+table_subgroup_d1 %>%
+  tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The row indicates the subpopulation. In the columns of quantitative outcomes, each cell includes the point estimate and the standard error of a model with a linear term for the scoring variable and triangular kernel. In the columns of qualitative outcomes, the cell only offers the point estimate. Level of education measured through ISCED. The date that sets the starting of the COVID-19 subpopulation is 01/01/2020. The subpopulation not affected by COVID-19 is made up by those that started AXL before 01/01/2019. Results on the third and fourth semester are not shown since at these periods COVID-19 was already active.") %>%
+  setNames(c("", "$Y_1$", "$Y_2$", "$Y_3$", "$Y_4$", "$Y_{OEC}$", "$Y_{FTCm12}$")) %>%
+  style_tt(align = "lcccccc") %>%
+  format_tt(replace = "") %>%
+  format_tt(linebreak = "<br>")
+```
+
+A possible service-based explanation is that caseworkers put more effort on those jobseekers considered easier to place due to their vocational education. In such cases, training interventions may target a narrower set of skills, whereas individuals with general education might require broader (and longer) training. An alternative user-based interpretation is that, despite equal treatment by caseworkers, only those with upper secondary education may maintain their jobs. This interpretation is consistent with the coexistence of (1) an effect estimate of +5 p.p. on the probability of getting an open-ended contract as the longest employment and (2) a null effect on the number of days worked for those with compulsory education level.  For the second treatment comparison ($D_2$), the results are even more robust by subpopulation, since there are no statistically significant effects at $\alpha=0.05$.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-subgroupd2
+#| tbl-cap: !expr sprintf("Subgroup analysis for $D_2$")
+
+table_subgroup_d2 <- read_csv(here::here('intermediate/script04/subgroupD2all_compact.csv')) %>%
+  select(-"...1") %>%
+  mutate(subgroup = case_when(subgroup == "Age >= 50" ~ "Age $\\ge$ 50",
+                              subgroup == "Age < 50" ~ "Age $<$ 50",
+                              subgroup == "Date < COVID-19" ~ "Date $<$ COVID-19",
+                              subgroup == "Date >= COVID-19" ~ "Date $\\ge$ COVID-19",
+                              TRUE ~ subgroup))
+
+table_subgroup_d2 %>%
+  tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The row indicates the subpopulation. In the columns of quantitative outcomes, each cell includes the point estimate and the standard error of a model with a linear term for the scoring variable and triangular kernel. In the columns of qualitative outcomes, the cell only offers the point estimate. Level of education measured through ISCED. The date that sets the starting of the COVID-19 subpopulation is 01/01/2020. The subpopulation not affected by COVID-19 is made up by those that started AXL before 01/01/2019. Results on the third and fourth semester are not shown since at these periods COVID-19 was already active.") %>%
+  setNames(c("", "$Y_1$", "$Y_2$", "$Y_3$", "$Y_4$", "$Y_{OEC}$", "$Y_{FTCm12}$")) %>%
+  style_tt(align = "lcccccc") %>%
+  format_tt(replace = "") %>%
+  format_tt(linebreak = "<br>")
+```
+
+\clearpage
+## E. Additional figures for main results {.unnumbered}
+
+In this section, we include tables and figures that complement the results presented in the paper.
+
+::: {#fig-intensitytraining layout-ncol=2}
+![](../intermediate/script04/plots/late_d1_yht.pdf)
+
+![](../intermediate/script04/plots/late_d2_yht.pdf)
+
+RD plots for the effect on hours of training planned. LSM: Local Sample Mean.
+:::
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-training
+#| tbl-cap: Estimates of effects for each treatment assignment at the mean of hours of training planned
+
+table_tr_compact <- read_csv(here::here("intermediate/script02/table_tr_compact.csv")) %>%
+  select(-`...1`) %>%
+  mutate(col1 = case_when(col1 == "Bandwidth" ~  "Bandwidth $(h)$",
+                          TRUE ~ paste0("$", col1, "$"))) %>%
+  select(-X)
+
+table_tr_compact %>%
+  tt(width = .5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and its standard error in parenthesis. $n_h$ is the effective sample size. The polynomial degree is always one.") %>%
+  setNames(c("", "$Y_{HT}$")) %>%
+  format_tt(linebreak = "<br>") %>%
+  style_tt(align = "lc")
+
+```
+
+
+::: {#fig-emplmean34 layout-nrow=2}
+![](../intermediate/script04/plots/late_d1_y3.pdf)
+
+![](../intermediate/script04/plots/late_d1_y4.pdf)
+
+![](../intermediate/script04/plots/late_d2_y3.pdf)
+
+![](../intermediate/script04/plots/late_d2_y4.pdf)
+
+RD plots with local means for employment duration variables (semesters 3 and 4). LSM: local sample mean.
+:::
+
+::: {#fig-emplmedian34 layout-nrow=2}
+![](../intermediate/script04/plots/lqte_d1_y3.pdf)
+
+![](../intermediate/script04/plots/lqte_d1_y4.pdf)
+
+![](../intermediate/script04/plots/lqte_d2_y3.pdf)
+
+![](../intermediate/script04/plots/lqte_d2_y4.pdf)
+
+RD plots with local medians for employment duration variables (semesters 3 and 4). LSMed: local sample median.
+:::
+
+::: {#fig-emplquantd1 layout-nrow=2}
+![](../intermediate/script02/plots/lqte_d1_y1_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d1_y2_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d1_y3_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d1_y4_allquant.pdf)
+
+Point estimates and uniform 90% confidence intervals for $LQTE(\tau)$ and $D_1$
+:::
+
+::: {#fig-emplquantd2 layout-nrow=2}
+![](../intermediate/script02/plots/lqte_d2_y1_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d2_y2_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d2_y3_allquant.pdf)
+
+![](../intermediate/script02/plots/lqte_d2_y4_allquant.pdf)
+
+Point estimates and uniform 90% confidence intervals for $LQTE(\tau)$ and $D_2$
+:::
+
+::: {#fig-emplpropother layout-nrow=2}
+![](../intermediate/script04/plots/latej_d1_yftc612.pdf)
+
+![](../intermediate/script04/plots/latej_d1_yftc05.pdf)
+
+![](../intermediate/script04/plots/latej_d2_yftc612.pdf)
+
+![](../intermediate/script04/plots/latej_d2_yftc05.pdf)
+
+RD plots with local proportions for employment quality variables (FTC612 and FTC05).
+:::
+
+\clearpage
+## F. Plausibility checks {.unnumbered}
+
+This section shows the estimates for the two plausibility checks that bring evidence about the credibility of the identification assumptions. Our estimands target a specific subset of the population. Following @heckmanetal2002, we can think the selection process as a sequence of (population) sets or variables: Eligibility ($E_i$) $\supseteq$ Awareness ($W_i$) $\supseteq$ Application ($A_i$) $\supseteq$ Endowment ($D_i$) $\supseteq$ Participation ($P_i$). We claim that we can only credibly identify the effect of treatment endowment ($D_i$) on certain outcomes, because we precisely know how $D_i$ is determined. The key assumption here is that $S_i$ fully determines $D_i$ (Assumption 1), which will be target of our plausibility checks.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-pseudotreatment
+#| tbl-cap: Estimates of employment duration effects for each pseudo-treatment
+
+table_pseudo_compact <- read_delim(here::here("intermediate/script03/table_pseudo_compact.csv")) %>%
+  mutate(parameter = case_when(parameter == "D_1" ~  "$D_1$",
+                               parameter == "D_2" ~  "$D_2$",
+                          TRUE ~ parameter)) %>%
+  mutate(LQTE05_Ym1 = if_else(LQTE05_Ym1 == "TS: 0.268\r\r\nTH: 0.318", "TS: 0.268<br>TH: 0.318", LQTE05_Ym1))
+
+table_pseudo_compact %>%
+  tt(width = 0.5,
+            notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The first column shows the point estimate of the LATE, the standard error and the p-value for the null effect hypothesis. The second column present the point estimate of the $LQTE(0.5)$ and the p-value of each hypothesis (TS: treatment non-significance test, TH: treatment heterogeneity test). We cannot run hypothesis tests for $LQTE(0.5)_{Y_{-1}}$ of $D_2$ because the optimal bandwidth is estimated from the difference at the median. However, 57 \\% of the treatment group (with a bandwidth of 0.1) has a censored outcome (0), so there aren't enough data to estimate the optimal bandwidth. In the control group, 49 \\% of participants registered 0 days of employment.") %>%
+  setNames(c("", "$LATE_{Y_{-1}}$", "$LQTE(0.5)_{Y_{-1}}$")) %>%
+  format_tt(linebreak = "<br>") %>%
+  format_tt(replace = "") %>%
+  style_tt(align = "lcc")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-balance
+#| tbl-cap: Covariate balance analysis for each treatment comparison
+
+table_balance <- read_delim(here::here("intermediate/script03/T_balance.csv")) %>%
+  drop_na(D1)
+
+table_balance %>%
+  tt(notes = "Note: The cell shows the estimated difference (of means or proportions) between both groups for each comparison. The estimator used a polynomial degree one and triangular kernel. The quantitative variable, “age”, also includes the absolute standardized mean difference in parentheses. The categorizations of level of education, occupations, and sectors follow the statistical classifications of Italy and Veneto.") %>%
+  setNames(c("", "$D_1$", "$D_2$")) %>%
+  group_tt(i = list("Level of educational attainment" = 5, "Last occupation" = 10,
+                    "Sector of last employment" = 18)) %>%
+  style_tt(align = "lcc")
+```
+
+\clearpage
+## G. Robustness checks {.unnumbered}
+
+Lastly, we present the results of the robustness checks to evaluate the sensitivity of our findings to minor modelling decisions.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd1y1
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_1$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d1 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_1.xlsx"))
+amse_y1d1 <- data.frame(m1 = as.character(round(amse_allouts_d1[1,1], 3)),
+                        m2 = as.character(round(amse_allouts_d1[1,2], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y1_d1 <- read_csv(here::here("intermediate/script02/E3_cont_D1_post6_nocl.csv"))
+colnames(est_y1_d1)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y1_d1 <- est_y1_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y1d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y1_d1 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd1y2
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_2$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d1 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_1.xlsx"))
+amse_y2d1 <- data.frame(m1 = as.character(round(amse_allouts_d1[1,3], 3)),
+                        m2 = as.character(round(amse_allouts_d1[1,4], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y2_d1 <- read_csv(here::here("intermediate/script02/E4_cont_D1_post12_nocl.csv"))
+colnames(est_y2_d1)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y2_d1 <- est_y2_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y2d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y2_d1 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd1y3
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_3$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d1 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_1.xlsx"))
+amse_y3d1 <- data.frame(m1 = as.character(round(amse_allouts_d1[1,5], 3)),
+                        m2 = as.character(round(amse_allouts_d1[1,6], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y3_d1 <- read_csv(here::here("intermediate/script02/E5_cont_D1_post18_nocl.csv"))
+colnames(est_y3_d1)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y3_d1 <- est_y3_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y3d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y3_d1 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd1y4
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_4$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d1 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_1.xlsx"))
+amse_y4d1 <- data.frame(m1 = as.character(round(amse_allouts_d1[1,7], 3)),
+                        m2 = as.character(round(amse_allouts_d1[1,8], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y4_d1 <- read_csv(here::here("intermediate/script02/E6_cont_D1_post24_nocl.csv"))
+colnames(est_y4_d1)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y4_d1 <- est_y4_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y4d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y4_d1 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd2y1
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_1$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d2 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_2.xlsx"))
+amse_y1d2 <- data.frame(m1 = as.character(round(amse_allouts_d2[1,1], 3)),
+                        m2 = as.character(round(amse_allouts_d2[1,2], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y1_d2 <- read_csv(here::here("intermediate/script02/E7_cont_D2_post6_nocl.csv"))
+colnames(est_y1_d2)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y1_d2 <- est_y1_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y1d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y1_d2 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd2y2
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_2$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d2 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_2.xlsx"))
+amse_y2d2 <- data.frame(m1 = as.character(round(amse_allouts_d2[1,3], 3)),
+                        m2 = as.character(round(amse_allouts_d2[1,4], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y2_d2 <- read_csv(here::here("intermediate/script02/E8_cont_D2_post712_nocl.csv"))
+colnames(est_y2_d2)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y2_d2 <- est_y2_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y2d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y2_d2 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd2y3
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_3$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d2 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_2.xlsx"))
+amse_y3d2 <- data.frame(m1 = as.character(round(amse_allouts_d2[1,5], 3)),
+                        m2 = as.character(round(amse_allouts_d2[1,6], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y3_d2 <- read_csv(here::here("intermediate/script02/E9_cont_D2_post1318_nocl.csv"))
+colnames(est_y3_d2)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y3_d2 <- est_y3_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y3d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y3_d2 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd2y4
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_4$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d2 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_2.xlsx"))
+amse_y4d2 <- data.frame(m1 = as.character(round(amse_allouts_d2[1,7], 3)),
+                        m2 = as.character(round(amse_allouts_d2[1,8], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_y4_d2 <- read_csv(here::here("intermediate/script02/E10_cont_D2_post1924_nocl.csv"))
+colnames(est_y4_d2)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_y4_d2 <- est_y4_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y4d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y4_d2 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd1yhs
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_{HS}$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d1 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_1.xlsx"))
+amse_yhsd1 <- data.frame(m1 = as.character(round(amse_allouts_d1[1,9], 3)),
+                        m2 = as.character(round(amse_allouts_d1[1,10], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_yhs_d1 <- read_csv(here::here("intermediate/script02/E11_cont_D1_jshours_nocl.csv"))
+colnames(est_yhs_d1)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_yhs_d1 <- est_yhs_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_yhsd1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_yhs_d1 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_robd2yhs
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_{HS}$ with one common MSE-optimal bandwidth and estimates with a slight change of this bandwidth")
+
+amse_allouts_d2 <- readxl::read_excel(here::here("intermediate/script02/stata/resu_amse_2.xlsx"))
+amse_yhsd2 <- data.frame(m1 = as.character(round(amse_allouts_d2[1,9], 3)),
+                        m2 = as.character(round(amse_allouts_d2[1,10], 3)),
+                        m3 = "",
+                        m4 = "")
+
+est_yhs_d2 <- read_csv(here::here("intermediate/script02/E13_cont_D2_jshours_nocl.csv"))
+colnames(est_yhs_d2)[4:7] <- c("m1", "m2", "m3", "m4")
+
+est_yhs_d2 <- est_yhs_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m4, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_yhsd2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_yhs_d2 %>%
+    tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.") %>%
+  setNames(c("", "Model 1", "Model 2", "Model 3", "Model 4")) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d1y1
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_1$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d1 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_1_2bws.xlsx"))
+amse_y1d1 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d1[1,1], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,2], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d1[1,3], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,4], 3)))
+                        )
+
+est_y1_d1 <- read_csv(here::here("intermediate/script03/E15_2bws_D1_Y1.csv"))
+colnames(est_y1_d1)[4:5] <- c("m1", "m2")
+
+est_y1_d1 <- est_y1_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y1d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y1_d1 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d1y2
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_2$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d1 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_1_2bws.xlsx"))
+amse_y2d1 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d1[1,5], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,6], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d1[1,7], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,8], 3)))
+                        )
+
+est_y2_d1 <- read_csv(here::here("intermediate/script03/E16_2bws_D1_Y2.csv"))
+colnames(est_y2_d1)[4:5] <- c("m1", "m2")
+
+est_y2_d1 <- est_y2_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y2d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y2_d1 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d1y3
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_3$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d1 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_1_2bws.xlsx"))
+amse_y3d1 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d1[1,9], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,10], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d1[1,11], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,12], 3)))
+                        )
+
+est_y3_d1 <- read_csv(here::here("intermediate/script03/E17_2bws_D1_Y3.csv"))
+colnames(est_y3_d1)[4:5] <- c("m1", "m2")
+
+est_y3_d1 <- est_y3_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y3d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y3_d1 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d1y4
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_1$ on $Y_4$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d1 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_1_2bws.xlsx"))
+amse_y4d1 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d1[1,13], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,14], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d1[1,15], 3)), "<br>Right: ", as.character(round(amse_2bws_d1[1,16], 3)))
+                        )
+
+est_y4_d1 <- read_csv(here::here("intermediate/script03/E18_2bws_D1_Y4.csv"))
+colnames(est_y4_d1)[4:5] <- c("m1", "m2")
+
+est_y4_d1 <- est_y4_d1 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y4d1) %>%
+  mutate(col1 = c("$D_1$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y4_d1 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d2y1
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_1$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d2 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_2_2bws.xlsx"))
+amse_y1d2 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d2[1,1], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,2], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d2[1,3], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,4], 3)))
+                        )
+
+est_y1_d2 <- read_csv(here::here("intermediate/script03/E19_2bws_D2_Y1.csv"))
+colnames(est_y1_d2)[4:5] <- c("m1", "m2")
+
+est_y1_d2 <- est_y1_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y1d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y1_d2 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d2y2
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_2$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d2 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_2_2bws.xlsx"))
+amse_y2d2 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d2[1,5], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,6], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d2[1,7], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,8], 3)))
+                        )
+
+est_y2_d2 <- read_csv(here::here("intermediate/script03/E20_2bws_D2_Y2.csv"))
+colnames(est_y2_d2)[4:5] <- c("m1", "m2")
+
+est_y2_d2 <- est_y2_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y2d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y2_d2 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d2y3
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_3$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d2 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_2_2bws.xlsx"))
+amse_y3d2 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d2[1,9], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,10], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d2[1,11], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,12], 3)))
+                        )
+
+est_y3_d2 <- read_csv(here::here("intermediate/script03/E21_2bws_D2_Y3.csv"))
+colnames(est_y3_d2)[4:5] <- c("m1", "m2")
+
+est_y3_d2 <- est_y3_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y3d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y3_d2 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-late_2bws_d2y4
+#| tbl-cap: !expr sprintf("Estimates of $LATE$ of $D_2$ on $Y_4$ with one MSE-optimal bandwidth selector for each side")
+
+amse_2bws_d2 <- readxl::read_excel(here::here("intermediate/script03/stata/resu_amse_2_2bws.xlsx"))
+amse_y4d2 <- data.frame(m1 = paste0("Left: ", as.character(round(amse_2bws_d2[1,13], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,14], 3))),
+                        m2 = paste0("Left: ", as.character(round(amse_2bws_d2[1,15], 3)), "<br>Right: ", as.character(round(amse_2bws_d2[1,16], 3)))
+                        )
+
+est_y4_d2 <- read_csv(here::here("intermediate/script03/E22_2bws_D2_Y4.csv"))
+colnames(est_y4_d2)[4:5] <- c("m1", "m2")
+
+est_y4_d2 <- est_y4_d2 %>%
+  select(-c(part, term, statistic)) %>%
+  mutate(
+    across(m1:m2, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      TRUE ~ .x))
+    ) %>%
+  slice(-c(2)) %>%
+  bind_rows(. , amse_y4d2) %>%
+  mutate(col1 = c("$D_2$", "Bandwidth $(h)$", "$n_h$", "Kernel", "Poly. degree", "$\\hat{AMSE}$")) %>%
+  relocate(col1)
+
+est_y4_d2 %>%
+  tt(width = 0.5,
+     notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.") %>%
+  setNames(c("", "Model 1", "Model 2")) %>%
+  style_tt(align = "lcc") %>%
+  format_tt(linebreak = "<br>")
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-robquant
+#| tbl-cap: !expr sprintf("Estimates of $LQTE(\\tau)$ with the second lowest bandwidth")
+
+container_lqte_d1 <- read_delim(here::here("intermediate/script03/E23a_LQTE_secondbw.csv"))
+container_lqte_d2 <- read_delim(here::here("intermediate/script03/E23b_LQTE_secondbw.csv"))
+
+container_lqte_d1 <- container_lqte_d1 %>%
+  mutate(across(everything(), as.character))
+
+container_lqte_d2 <- container_lqte_d2 %>%
+  mutate(across(everything(), as.character))
+
+container_lqte <- bind_rows(container_lqte_d1, container_lqte_d2) %>%
+  mutate(object = case_when(object == "q1_pe" ~ "$\\tau = 0.25$",
+                            object == "q2_pe" ~ "$\\tau = 0.5$",
+                            object == "q3_pe" ~ "$\\tau = 0.75$",
+                            object == "nonsign_test_stars" ~ "Treatment non-significance test",
+                            object == "homo_test_stars" ~ "Treatment homogeneity test",
+                            TRUE ~ object))
+
+container_lqte %>%
+  tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. All models use the Epanechnikov kernel.") %>%
+  setNames(c("", "$Y_1$", "$Y_2$", "$Y_3$", "$Y_4$")) %>%
+  group_tt(i = list("$D_1$" = 1, "$D_2$" = 7)) %>%
+  style_tt(align = "lcccc") %>%
+  format_tt(replace = "")
+  
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+#| label: tbl-robquality
+#| tbl-cap: Estimates of employment quality effects for each treatment and contract using one different bandwidth for each category
+
+table_latejbin_compact <- read.csv(here::here("intermediate/script02/table_latejbin_compact.csv")) %>%
+  mutate(treatment = case_when(treatment == "D1" ~  "$D_1$",
+                           treatment == "D2" ~  "$D_2$"))
+
+table_latejbin_compact %>%
+  tt(notes = "Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE_j$ and the 95 \\% confidence interval in parentheses.") %>%
+  setNames(c("", "$Y_{OEC}$", "$Y_{FTCm12}$", "$Y_{FTC612}$", "$Y_{FTC05}$")) %>%
+  format_tt(linebreak = "<br>") %>%
+  style_tt(align = "lcccc")
+
+```
+
+\clearpage
+# References {.unnumbered}
+
+::: {#refs}
+:::

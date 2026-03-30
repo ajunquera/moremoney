@@ -1,0 +1,1608 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  11pt]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{graphicx}
+\usepackage{bbm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[nomarginpar]{geometry}
+\usepackage{setspace}
+%\usepackage{natbib}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{tabularx, calc}
+\usepackage{threeparttable}
+\usepackage{picinpar}
+\usepackage{longtable}
+\usepackage{ae}
+\usepackage{float}
+\usepackage{morefloats}
+\usepackage{palatino}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage[normalem]{ulem}
+\usepackage{ragged2e}
+\usepackage{changepage}
+\usepackage{longtable}
+%\usepackage{graphics}
+%\usepackage[tableposition=top]{caption}
+
+\geometry{left=1.0in,right=1.0in,top=1.0in,bottom=1.0in}
+\onehalfspacing
+\usepackage{float}
+\usepackage{tabularray}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{rotating}
+\UseTblrLibrary{siunitx}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\usepackage{etoolbox}
+\pretocmd{\subsection}{\clearpage\FloatBarrier}{}{}
+\usepackage{placeins}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Supplementary material},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Supplementary material}
+\author{}
+\date{}
+\begin{document}
+\def\spacingset#1{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize} \spacingset{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Supplementary material}
+\author{
+}
+\maketitle
+
+\bigskip
+\bigskip
+ % added by AFJ
+
+\bigskip
+
+
+
+\newpage
+\spacingset{1.2} % DON'T change the spacing!
+
+\subsection{A. Descriptive statistics of our
+sample}\label{a.-descriptive-statistics-of-our-sample}
+
+Table~\ref{tbl-summary} characterizes our sample by offering some
+summary statistics on sociodemographic and labour market variables. We
+see that the mean age in the pooled sample is 44 years old, being almost
+perfectly balanced in sex terms and with a remarkable presence of
+foreign people (22.3 \%). The level of educational attainment with more
+prevalence is lower secondary, with 4 out of 10 participants having this
+level. There is also a great presence of people with technical education
+at the upper secondary level (32 \%). This distribution of educational
+credentials fits with the distribution of last occupations, due to the
+high prevalence of low skilled occupations. Furthermore, notice the
+non-negligible proportion of people that according to our sample did not
+have any job in the previous three years (those with unobserved
+occupation, that is, the 23.2 \%). As expected due to the structural
+equation of the score, categories that better predicts unemployment are
+more present in group \(C\).
+
+\begin{table}
+
+\caption{\label{tbl-summary}Summary statistics on pretreatment
+variables.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: Each cell indicates the proportion by column (qualitative variables) or the mean (quantitative variables). Level of studies according to ISCED-A-11 and occupations according to ISCO-08. $n=32403$, $n_A = 11479$,  $n_B = 10769$, $n_C = 10155$.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{19}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+cell{1-5,7-12,14-18}{1}={}{halign=l},
+cell{6,13}{1}={c=5}{halign=l},
+}                     %% tabularray inner close
+& $A$ & $B$ & $C$ & All \\
+Age & 40.0 & 43.7 & 48.8 & 44.0 \\
+Sex (Woman) & 43.1 & 51.0 & 59.7 & 50.9 \\
+Foreign (Yes) & 17.8 & 20.6 & 29.2 & 22.3 \\
+Disability (Yes) & 3.0 & 5.3 & 10.0 & 5.9 \\
+Level of educational attainment & Level of educational attainment & Level of educational attainment & Level of educational attainment & Level of educational attainment \\
+Primary & 2.4 & 3.4 & 7.1 & 4.2 \\
+Lower secondary & 33.2 & 40.6 & 50.3 & 41.0 \\
+Upper secondary general & 9.6 & 8.2 & 6.9 & 8.3 \\
+Upper secondary vocational & 34.4 & 32.7 & 26.7 & 31.4 \\
+University or equivalent (arts included) & 18.1 & 13.6 & 7.7 & 13.3 \\
+Unobserved & 2.2 & 1.4 & 1.3 & 1.7 \\
+Last occupation & Last occupation & Last occupation & Last occupation & Last occupation \\
+High skilled white collar (ISCO 1, 2, and 3) & 11.9 & 8.9 & 5.3 & 8.8 \\
+Low skilled white collar (ISCO 4 and 5) & 31.5 & 27.2 & 20.0 & 26.5 \\
+High skilled blue collar (ISCO 6 and 7) & 12.4 & 12.2 & 11.8 & 12.2 \\
+Low skilled blue collar (ISCO 8 and 9) & 32.5 & 29.8 & 25.1 & 29.3 \\
+Unobserved & 11.6 & 21.9 & 37.8 & 23.2 \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\subsection*{B. Treatment received as a function of the
+score}\label{b.-treatment-received-as-a-function-of-the-score}
+\addcontentsline{toc}{subsection}{B. Treatment received as a function of
+the score}
+
+The dataset used in this article is the product of joining five data
+extractions from the PES of Veneto. Some checks were performed before
+determining the definitive dataset. In one of these checks, we verified
+that the column of the original score was the same for each unit (the
+individual participation, i.e.~\(i \times t\)) in the first and the
+second dataset. In 339 out of the 40,998 units, the values did not
+coincide. Our interpretation was that the database could register more
+than one profiling (model prediction) for each individual and date. This
+could happen if the caseworker made a mistake annotating the values of
+the variables the first time and run it a second time with the proper
+values. Moreover, the 339 cases suggest that the data extraction routine
+did not request a certain case (model prediction) following a certain
+rule, but probably in a random way. For this reason, since we do not
+know which of these profiling was the latest and probably the one used
+for treatment assignment, we removed all these 339 cases from the
+sample.
+
+Once we performed this data quality check, we can safely plot the
+treatment received as a function of the score. To address the
+discreteness of the treatment variable, we present both a scatter plot
+(left) and a jitter plot (right). The plots in
+Figure~\ref{fig-scatterjitter} present the treatment received and the
+reversed score with two vertical lines indicating the cutoffs in which
+the treatment should change. We see that there are three dots that
+violate the treatment assignment rule, two in the high-dose group
+(\(C\)) with a score lower than expected and one in the
+intermediate-dose group (\(B\)) with a score higher than expected. The
+jitter plot allows us to verify that these dots only represent 3 units
+out of the total of 40,659 units in the sample. In other words, 99.99 \%
+of the sample respects the treatment assignment rule. In sum, there is a
+low number of units that seem to have violated the assignment rule and
+the PES had problems managing the database expressed in the previous
+paragraph. For these reasons, we attribute these three units to
+measurement error and believe that Figure~\ref{fig-scatterjitter}
+validates the sharp regression discontinuity strategy once we remove
+these three units.
+
+\begin{figure}
+
+\caption{\label{fig-scatterjitter}Treatment received as a function of
+the score in a scatter plot (left) and a jitter plot (right).}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script01/scatterplot.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script01/jitterplot.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\clearpage
+
+\subsection*{C. Description of
+variables}\label{c.-description-of-variables}
+\addcontentsline{toc}{subsection}{C. Description of variables}
+
+\subsubsection*{1. Outcome variables}\label{outcome-variables}
+\addcontentsline{toc}{subsubsection}{1. Outcome variables}
+
+\textbf{Hours of treatment uptake} (quantitative; \(Y_{HS}\),
+\(Y_{HT}\)). The variable on the number of hours of job search
+assistance (\(Y_{HS}\)) collects the actual number of hours received,
+whereas the variable for adult training measures (\(Y_{HT}\)) records
+the planned number of training hours. The public employment service of
+Veneto has not data on the actual reception of training hours.
+
+\textbf{Days worked as salaried employee at semester \(t\)}
+(quantitative; \(Y_1\), \(Y_2\), \(Y_3\),\(Y_4\)). This variable gathers
+the number of days worked as salaried employment, not as
+self-employment, in a certain semester. Specifically, we observe it as
+semesters +1, +2, +3, and +4 since the beginning of the treatment.
+Notice that it only registers the days actually worked or, in other
+words, the working days under active labour relationships.
+
+\textbf{Type of employment contract of the longest employment}
+(qualitative, ordered; \(Y_{OEC}\), \(Y_{FTCm12}\), \(Y_{FTC612}\),
+\(Y_{FTC05}\)). This variable collects the type of employment contract
+associated to the employment spell with the longest expected duration
+during the time interval initiated from the beginning of the treatment
+to 24 months later. Note that this is the declared duration of a
+contract and not its actual duration. Open-ended contracts have an
+expected duration of \(\infty\) days. This variable has five possible
+values: open-ended contract, fixed-term contract with expected duration
+of more than 12 months, fixed-term contract with expected duration of
+{[}6, 12{]} months, fixed-term contract with expected duration of less
+than 6 months, no employment. Then, it is a variable that gathers the
+expected duration of the contract regardless of the specific Italian
+name of such contract. For instance, this means that the category
+``open-ended contract'' not only includes ``contratto tempo
+indeterminato'', but also the open-ended version of the ``contratto
+domestico''.
+
+\textbf{Type of employment contract of the awarded employment}
+(qualitative, ordered; \(Y_{pOEC}\), \(Y_{pFTCm12}\), \(Y_{pFTC612}\)).
+This variable indicates the type of employment contract that triggered
+the performance pay received by the provider (if any). We follow the
+same classification of employment contracts that we used for the outcome
+``type of employment contract of the longest employment''.
+
+\textbf{Participation in AXL} (qualitative, unordered; \(P\)). This
+variable registers if the individual finally spent any money for the
+treatments endowed by AXL and the ID of the organization that acted as
+service provider. Thereby, this variable has 97 possible values, which
+are all the integer numbers from 0 to 96. Number 0 represents
+``non-participation'' and numbers from 1 to 96 are the IDs of the
+providers. For the analyses of Section 4.3, we stratified the sample
+according to the value of this variable, so there was no variability in
+each stratum.
+
+\subsubsection*{2. Treatment variables}\label{treatment-variables}
+\addcontentsline{toc}{subsubsection}{2. Treatment variables}
+
+We propose to proxy the intensity of an intervention not only with the
+duration of actions, but also with the money invested to increase the
+effort of the providers. This reconciles the meaning it has in the micro
+and the macro literatures of ALMP (\citeproc{ref-martin2015}{Martin
+2015}; \citeproc{ref-creponberg2016}{Crépon and Van Den Berg 2016}).
+
+\textbf{Intermediate intensity treatment} (qualitative, ordered;
+\(D_1\)). This variable collects if the individual is assigned to the
+active treatment of intermediate intensity (1, group \(B\)) or if she/he
+is assigned to the control treatment of low intensity (0, group \(A\)).
+It is only defined for those individuals with \(s \le 0.6\).
+
+\textbf{High intensity treatment} (qualitative, ordered; \(D_2\)). This
+variable collects if the individual is assigned to the active treatment
+of high intensity (1, group \(B\)) or if she/he is assigned to the
+control treatment of intermediate intensity (0, group \(A\)). It is only
+defined for those individuals with \(s \ge 0.41\).
+
+In the article, we presented the treatment features of the reformed
+version that was passed in April 2019. The original version had two
+minor changes: (1) the maximum duration was 2 months higher for group
+\(B\) and 3 months higher for group \(C\), and (2) the training amount
+was 554 € lower for each group. Note that there are not data about
+internships participation, but we think that it might have been low.
+Internships in Veneto do not require an employment contract, but they
+force the payment of a stipend to the worker. In case the provider
+assumed this payment in advance, it would not get the money back unless
+the participant signs an employment contract lasting at least six
+months. This would entail a significant risk of increased expenditure
+for the provider.
+
+\subsubsection*{3. Confounding variables}\label{confounding-variables}
+\addcontentsline{toc}{subsubsection}{3. Confounding variables}
+
+\textbf{Scoring variable} (quantitative; \(S\)). The score output by the
+statistical profiling model used by the Veneto public employment service
+to allocate people into treatment groups. It is a function of the
+following variables: sex, age, foreign nationality, level of studies,
+having a disability, termination reason of the last job, major group of
+occupation of the last job, and sector of the company of the last job.
+
+\subsubsection*{4. Additional variables}\label{additional-variables}
+\addcontentsline{toc}{subsubsection}{4. Additional variables}
+
+\textbf{Age} (quantitative). Number of years old at the date the
+individual got the voucher of AXL.
+
+\textbf{Sex} (qualitative, unordered). Sex of the participant, either
+man or woman.
+
+\textbf{Foreign} (qualitative, unordered). It collects if the individual
+has the Italian citizenship or not.
+
+\textbf{Disability} (qualitative, unordered). It gathers if the
+participant has any type of disability.
+
+\textbf{Level of educational attainment} (qualitative, unordered). It
+includes the Italian name of the credential assigned to the highest
+level of educational attainment of the participant. We can then convert
+it to the ISCED-A classification of levels of education.
+
+\textbf{Last occupation of last job} (qualitative, unordered). It
+registers the occupation that the individual had in its last employment
+contract before participating in AXL. Originally, it was written using
+the Italian classification of occupations called CP2011. We may then
+convert it to ISCO-08.
+
+\textbf{Industry of last job} (qualitative, unordered). This variable
+collects the industry of the last job using the ATECO 2007, the Italian
+classification of economic activities. To simplify it, we have converted
+it to the second level of the classification of economic activities used
+in Veneto Lavoro (the Veneto PES), which may be found
+\href{https://www.venetolavoro.it/glossario-e-strumenti}{here}.
+
+\clearpage
+
+\subsection*{D. Heterogeneity analyses}\label{d.-heterogeneity-analyses}
+\addcontentsline{toc}{subsection}{D. Heterogeneity analyses}
+
+In this section, we vary the population of interest through
+pre-specified subgroup analyses. The heterogeneity analyses consider
+that the effect might vary by individual, which could be an alternative
+explanation for the null estimates of the \(LATE\) or the \(LQTE\).
+
+In subgroup analyses, we have studied how the estimates of \(LATE\) and
+\(LATE_j\) change when we focus on strata of the population defined by
+sex, age, level of education, or implementation during the COVID-19
+pandemic. For the first treatment comparison (\(D_1\)), the lack of
+statistically significant effects is still prevalent with a pair of
+exceptions according to the level of education. Regarding age, we
+distinguish between individuals above and below 50 years old given the
+concurrent implementation of a policy in Italy that subsidizes social
+security contributions for long-term unemployed workers over that age
+(\citeproc{ref-pacificoetal2018}{Pacifico et al. 2018}). We find a gain
+of 20-25 days of employment during the second year for the jobseekers
+with upper secondary education located in group \(B\) (intermediate
+endowment) instead of group \(A\) (low endowment)\footnote{This increase
+  is not caused by an increase in the treatment uptake according to the
+  results of subsequent analyses.}. This is the unique subgroup in which
+we find non-zero effects for this active treatment.
+
+\begin{table}
+
+\caption{\label{tbl-subgroupd1}Subgroup analysis for \(D_1\)}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The row indicates the subpopulation. In the columns of quantitative outcomes, each cell includes the point estimate and the standard error of a model with a linear term for the scoring variable and triangular kernel. In the columns of qualitative outcomes, the cell only offers the point estimate. Level of education measured through ISCED. The date that sets the starting of the COVID-19 subpopulation is 01/01/2020. The subpopulation not affected by COVID-19 is made up by those that started AXL before 01/01/2019. Results on the third and fourth semester are not shown since at these periods COVID-19 was already active.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-7}{solid, black, 0.05em},
+hline{1}={1-7}{solid, black, 0.08em},
+hline{11}={1-7}{solid, black, 0.08em},
+column{2-7}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_1$ & $Y_2$ & $Y_3$ & $Y_4$ & $Y_{OEC}$ & $Y_{FTCm12}$ \\
+Sex = Woman & {-7.925\\(4.712)} & {-3.143\\(5.661)} & {8.374\\(7.36)} & {4.989\\(6.651)} & -0.022 & -0.004 \\
+Sex = Man & {-0.212\\(5.156)} & {9.01\\(5.444)} & {7.51\\(6.177)} & {3.309\\(6.394)} & 0.047*** & 0.002 \\
+Age $\ge$ 50 & {6.275\\(7.21)} & {15.325\\(7.908)} & {13.244\\(8.719)} & {-1.149\\(9.962)} & 0.009 & 0.006 \\
+Age $<$ 50 & {-4.733\\(4.266)} & {1.86\\(5.502)} & {6.632\\(6.309)} & {5.63\\(5.89)} & 0.009 & 0.006 \\
+Educ. = 1 or 2 & {-3.703\\(6.454)} & {3.666\\(5.223)} & {0.577\\(6.452)} & {-3.06\\(7.067)} & 0.054** & 0.002 \\
+Educ. = 3 & {3.351\\(6.086)} & {12.591*\\(7.411)} & {24.881***\\(9.211)} & {19.108**\\(8.733)} & -0.001 & 0.003 \\
+Educ. = 6, 7 or 8 & {-10.197\\(8.421)} & {-9.421\\(10.603)} & {-0.767\\(10.909)} & {-2.929\\(9.754)} & 0.011 & -0.006 \\
+Date $<$ COVID-19 & {-4.299\\(5.793)} & {0.549\\(7.696)} & { } & { } &   &   \\
+Date $\ge$ COVID-19 & {-7.704\\(11.022)} & {1.915\\(12.919)} & {2.072\\(12.544)} & {-5.401\\(11.186)} & -0.068 & 0.005 \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+A possible service-based explanation is that caseworkers put more effort
+on those jobseekers considered easier to place due to their vocational
+education. In such cases, training interventions may target a narrower
+set of skills, whereas individuals with general education might require
+broader (and longer) training. An alternative user-based interpretation
+is that, despite equal treatment by caseworkers, only those with upper
+secondary education may maintain their jobs. This interpretation is
+consistent with the coexistence of (1) an effect estimate of +5 p.p. on
+the probability of getting an open-ended contract as the longest
+employment and (2) a null effect on the number of days worked for those
+with compulsory education level. For the second treatment comparison
+(\(D_2\)), the results are even more robust by subpopulation, since
+there are no statistically significant effects at \(\alpha=0.05\).
+
+\begin{table}
+
+\caption{\label{tbl-subgroupd2}Subgroup analysis for \(D_2\)}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The row indicates the subpopulation. In the columns of quantitative outcomes, each cell includes the point estimate and the standard error of a model with a linear term for the scoring variable and triangular kernel. In the columns of qualitative outcomes, the cell only offers the point estimate. Level of education measured through ISCED. The date that sets the starting of the COVID-19 subpopulation is 01/01/2020. The subpopulation not affected by COVID-19 is made up by those that started AXL before 01/01/2019. Results on the third and fourth semester are not shown since at these periods COVID-19 was already active.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-7}{solid, black, 0.05em},
+hline{1}={1-7}{solid, black, 0.08em},
+hline{11}={1-7}{solid, black, 0.08em},
+column{2-7}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_1$ & $Y_2$ & $Y_3$ & $Y_4$ & $Y_{OEC}$ & $Y_{FTCm12}$ \\
+Sex = Woman & {7.286\\(5.64)} & {8.345\\(6.663)} & {2.632\\(6.573)} & {-0.965\\(6.43)} & -0.033* & 0 \\
+Sex = Man & {2.544\\(4.74)} & {8.02\\(6.232)} & {0.666\\(5.417)} & {4.02\\(6.074)} & -0.027 & 0.004 \\
+Age $\ge$ 50 & {-5.031\\(5.989)} & {-0.509\\(6.161)} & {-1.024\\(7.435)} & {8.058\\(9.572)} & -0.016 & 0.005 \\
+Age $<$ 50 & {8.412*\\(5.069)} & {8.593\\(5.517)} & {3.791\\(5.499)} & {1.784\\(5.327)} & -0.016 & 0.005 \\
+Educ. = 1 or 2 & {12.122*\\(7.569)} & {9.707\\(7.115)} & {3.275\\(6.506)} & {-2.512\\(6.884)} & -0.035 & -0.001 \\
+Educ. = 3 & {3.422\\(5.132)} & {4.032\\(6.259)} & {0.272\\(6.575)} & {10.127\\(7.305)} & -0.027 & 0.007* \\
+Educ. = 6, 7 or 8 & {0.087\\(7.984)} & {3.174\\(10.349)} & {-6.174\\(12.584)} & {4.808\\(12.258)} & -0.018 & 0.004 \\
+Date $<$ COVID-19 & {8.234\\(6.257)} & {8.362\\(6.601)} & { } & { } &   &   \\
+Date $\ge$ COVID-19 & {7.532\\(10.832)} & {0.691\\(11.099)} & {-7.754\\(10.9)} & {-12.612\\(13.423)} & -0.021 & 0.001 \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\clearpage
+
+\subsection*{E. Additional figures for main
+results}\label{e.-additional-figures-for-main-results}
+\addcontentsline{toc}{subsection}{E. Additional figures for main
+results}
+
+In this section, we include tables and figures that complement the
+results presented in the paper.
+
+\begin{figure}
+
+\caption{\label{fig-intensitytraining}RD plots for the effect on hours
+of training planned. LSM: Local Sample Mean.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_yht.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_yht.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\begin{table}
+
+\caption{\label{tbl-training}Estimates of effects for each treatment
+assignment at the mean of hours of training planned}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and its standard error in parenthesis. $n_h$ is the effective sample size. The polynomial degree is always one.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]},
+hline{2}={1-2}{solid, black, 0.05em},
+hline{1}={1-2}{solid, black, 0.08em},
+hline{8}={1-2}{solid, black, 0.08em},
+column{2}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_{HT}$ \\
+$D_1$ & {-0.240\\(1.333)} \\
+Bandwidth $(h)$ & {0.088} \\
+$n_h$ & {9195} \\
+$D_2$ & {2.142\\(1.722)} \\
+Bandwidth $(h)$ & {0.055} \\
+$n_h$ & {6027} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{figure}
+
+\caption{\label{fig-emplmean34}RD plots with local means for employment
+duration variables (semesters 3 and 4). LSM: local sample mean.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_y3.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_y4.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_y3.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_y4.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-emplmedian34}RD plots with local medians for
+employment duration variables (semesters 3 and 4). LSMed: local sample
+median.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d1_y3.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d1_y4.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d2_y3.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d2_y4.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-emplquantd1}Point estimates and uniform 90\%
+confidence intervals for \(LQTE(\tau)\) and \(D_1\)}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d1_y1_allquant.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d1_y2_allquant.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d1_y3_allquant.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d1_y4_allquant.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-emplquantd2}Point estimates and uniform 90\%
+confidence intervals for \(LQTE(\tau)\) and \(D_2\)}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d2_y1_allquant.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d2_y2_allquant.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d2_y3_allquant.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script02/plots/lqte_d2_y4_allquant.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\begin{figure}
+
+\caption{\label{fig-emplpropother}RD plots with local proportions for
+employment quality variables (FTC612 and FTC05).}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d1_yftc612.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d1_yftc05.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d2_yftc612.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d2_yftc05.pdf}}\end{minipage}%
+
+\end{figure}%
+
+\clearpage
+
+\subsection*{F. Plausibility checks}\label{f.-plausibility-checks}
+\addcontentsline{toc}{subsection}{F. Plausibility checks}
+
+This section shows the estimates for the two plausibility checks that
+bring evidence about the credibility of the identification assumptions.
+Our estimands target a specific subset of the population. Following
+Heckman et al. (\citeproc{ref-heckmanetal2002}{2002}), we can think the
+selection process as a sequence of (population) sets or variables:
+Eligibility (\(E_i\)) \(\supseteq\) Awareness (\(W_i\)) \(\supseteq\)
+Application (\(A_i\)) \(\supseteq\) Endowment (\(D_i\)) \(\supseteq\)
+Participation (\(P_i\)). We claim that we can only credibly identify the
+effect of treatment endowment (\(D_i\)) on certain outcomes, because we
+precisely know how \(D_i\) is determined. The key assumption here is
+that \(S_i\) fully determines \(D_i\) (Assumption 1), which will be
+target of our plausibility checks.
+
+\begin{table}
+
+\caption{\label{tbl-pseudotreatment}Estimates of employment duration
+effects for each pseudo-treatment}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. The first column shows the point estimate of the LATE, the standard error and the p-value for the null effect hypothesis. The second column present the point estimate of the $LQTE(0.5)$ and the p-value of each hypothesis (TS: treatment non-significance test, TH: treatment heterogeneity test). We cannot run hypothesis tests for $LQTE(0.5)_{Y_{-1}}$ of $D_2$ because the optimal bandwidth is estimated from the difference at the median. However, 57 \% of the treatment group (with a bandwidth of 0.1) has a censored outcome (0), so there aren't enough data to estimate the optimal bandwidth. In the control group, 49 \% of participants registered 0 days of employment.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{10}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $LATE_{Y_{-1}}$ & $LQTE(0.5)_{Y_{-1}}$ \\
+$D_1$ & {-2.76\\(3.53)} & {-5.157} \\
+P-value & {0.535} & {TS: 0.268\\TH: 0.318} \\
+Kernel & {Triangular} & {Epanechnikov} \\
+Poly. degree & {1} & {1} \\
+$D_2$ & {-4.587\\(3.53)} & {0.06} \\
+P-value & {0.267} &   \\
+Kernel & {Triangular} & {Epanechnikov} \\
+Poly. degree & {1} & {1} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-balance}Covariate balance analysis for each
+treatment comparison}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: The cell shows the estimated difference (of means or proportions) between both groups for each comparison. The estimator used a polynomial degree one and triangular kernel. The quantitative variable, “age”, also includes the absolute standardized mean difference in parentheses. The categorizations of level of education, occupations, and sectors follow the statistical classifications of Italy and Veneto.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{32}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+cell{1-5,7-11,13-20,22-31}{1}={}{halign=l},
+cell{6,12,21}{1}={c=3}{halign=l},
+}                     %% tabularray inner close
+& $D_1$ & $D_2$ \\
+Age & -1.060 (0.1326) & -0.520 (0.0737) \\
+Sex (Woman) & -0.062 & -0.019 \\
+Foreign (Yes) & -0.037 & 0.018 \\
+Disability (Yes) & 0.014 & -0.006 \\
+Level of educational attainment & Level of educational attainment & Level of educational attainment \\
+Primary & -0.001 & 0.001 \\
+Lower secondary & 0.029 & 0.012 \\
+Upper secondary of 3 years & -0.010 & 0.008 \\
+Upper secondary of 4 years & -0.052 & -0.037 \\
+University or equivalent & 0.046 & 0.004 \\
+Last occupation & Last occupation & Last occupation \\
+Intellectual (2) & -0.002 & 0.000 \\
+Technical (3) & 0.010 & -0.005 \\
+White collar low-skilled (4) & -0.005 & -0.002 \\
+White collar high-skilled (5) & -0.034 & 0.002 \\
+Blue collar high-skilled (6) & -0.007 & 0.034 \\
+Blue collar intermediate-skilled (7) & 0.005 & -0.004 \\
+Blue collar low-skilled (8) & 0.001 & -0.063 \\
+Other occupations or unemployed (1,9) & 0.025 & 0.043 \\
+Sector of last employment & Sector of last employment & Sector of last employment \\
+Made in Italy & -0.050 & -0.011 \\
+Metal and mechanical & 0.003 & -0.021 \\
+Other industries & 0.034 & -0.010 \\
+Construction & 0.004 & -0.017 \\
+Retail and leisure & -0.014 & 0.011 \\
+Wholesale and logistics & 0.043 & 0.028 \\
+Advanced third sector & -0.018 & -0.011 \\
+Personal services & -0.007 & 0.007 \\
+Other services & 0.006 & -0.002 \\
+Agriculture or unobserved & 0.002 & 0.041 \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\clearpage
+
+\subsection*{G. Robustness checks}\label{g.-robustness-checks}
+\addcontentsline{toc}{subsection}{G. Robustness checks}
+
+Lastly, we present the results of the robustness checks to evaluate the
+sensitivity of our findings to minor modelling decisions.
+
+\begin{table}
+
+\caption{\label{tbl-late_robd1y1}Estimates of \(LATE\) of \(D_1\) on
+\(Y_1\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_1$ & {-1.890\\(3.698)} & {-1.916\\(4.815)} & {-1.847\\(4.030)} & {-1.508\\(5.147)} \\
+Bandwidth $(h)$ & {0.064} & {0.081} & {0.054} & {0.071} \\
+$n_h$ & {6634} & {8410} & {5604} & {7342} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {15.431} & {24.128} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd1y2}Estimates of \(LATE\) of \(D_1\) on
+\(Y_2\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_1$ & {4.739\\(4.183)} & {4.320\\(4.917)} & {4.387\\(4.573)} & {5.242\\(5.194)} \\
+Bandwidth $(h)$ & {0.061} & {0.095} & {0.051} & {0.085} \\
+$n_h$ & {6375} & {9883} & {5377} & {8853} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {17.742} & {24.429} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd1y3}Estimates of \(LATE\) of \(D_1\) on
+\(Y_3\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_1$ & {7.961\\(5.115)} & {9.826*\\(5.584)} & {7.122\\(5.776)} & {9.593\\(5.977)} \\
+Bandwidth $(h)$ & {0.045} & {0.081} & {0.035} & {0.071} \\
+$n_h$ & {4716} & {8410} & {3747} & {7342} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {28.146} & {32.299} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd1y4}Estimates of \(LATE\) of \(D_1\) on
+\(Y_4\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_1$ & {4.428\\(4.743)} & {4.156\\(5.400)} & {2.578\\(5.277)} & {3.428\\(5.743)} \\
+Bandwidth $(h)$ & {0.053} & {0.087} & {0.043} & {0.077} \\
+$n_h$ & {5495} & {9067} & {4421} & {8022} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {22.418} & {29.31} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd2y1}Estimates of \(LATE\) of \(D_2\) on
+\(Y_1\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_2$ & {6.980*\\(4.383)} & {8.569*\\(5.073)} & {4.761\\(5.180)} & {8.015\\(5.616)} \\
+Bandwidth $(h)$ & {0.037} & {0.061} & {0.027} & {0.051} \\
+$n_h$ & {4077} & {6663} & {3036} & {5620} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {21.307} & {26.406} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd2y2}Estimates of \(LATE\) of \(D_1\) on
+\(Y_2\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_2$ & {10.141**\\(4.867)} & {14.646**\\(6.480)} & {12.053\\(5.573)} & {13.527\\(7.184)} \\
+Bandwidth $(h)$ & {0.044} & {0.056} & {0.034} & {0.046} \\
+$n_h$ & {4885} & {6080} & {3734} & {5047} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {26.986} & {44.738} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd2y3}Estimates of \(LATE\) of \(D_2\) on
+\(Y_3\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_2$ & {4.229\\(4.752)} & {11.151*\\(7.075)} & {7.135\\(5.385)} & {11.688\\(7.973)} \\
+Bandwidth $(h)$ & {0.049} & {0.051} & {0.039} & {0.041} \\
+$n_h$ & {5309} & {5533} & {4266} & {4506} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {25.032} & {54.626} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd2y4}Estimates of \(LATE\) of \(D_2\) on
+\(Y_4\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_2$ & {7.178\\(5.256)} & {15.730**\\(7.680)} & {7.703**\\(5.336)} & {7.550**\\(5.869)} \\
+Bandwidth $(h)$ & {0.044} & {0.047} & {0.043} & {0.077} \\
+$n_h$ & {4823} & {5164} & {4648} & {8281} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {31.393} & {66.153} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd1yhs}Estimates of \(LATE\) of \(D_1\) on
+\(Y_{HS}\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_1$ & {1.255***\\(0.210)} & {1.149***\\(0.239)} & {1.219***\\(0.237)} & {1.166***\\(0.256)} \\
+Bandwidth $(h)$ & {0.046} & {0.076} & {0.036} & {0.066} \\
+$n_h$ & {4774} & {7923} & {3796} & {6840} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {0.05} & {0.06} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_robd2yhs}Estimates of \(LATE\) of \(D_2\) on
+\(Y_{HS}\) with one common MSE-optimal bandwidth and estimates with a
+slight change of this bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Columns 1-2 use a MSE-optimal bandwidth.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 & Model 3 & Model 4 \\
+$D_2$ & {1.098***\\(0.255)} & {1.156***\\(0.377)} & {1.252**\\(0.375)} & {1.193**\\(0.406)} \\
+Bandwidth $(h)$ & {0.074} & {0.075} & {0.036} & {0.066} \\
+$n_h$ & {8013} & {8110} & {3926} & {7133} \\
+Kernel & {Triangular} & {Triangular} & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} & {1} & {2} \\
+$\hat{AMSE}$ & {0.065} & {0.144} & {} & {} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d1y1}Estimates of \(LATE\) of \(D_1\) on
+\(Y_1\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_1$ & {-2.527\\(3.612)} & {-2.176\\(4.743)} \\
+Bandwidth $(h)$ & {0.062} & {0.101} \\
+$n_h$ & {7059} & {8822} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 8.51\\Right: 5.667} & {Left: 10.3\\Right: 12.937} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d1y2}Estimates of \(LATE\) of \(D_1\) on
+\(Y_2\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_1$ & {4.640\\(4.263)} & {4.292\\(4.749)} \\
+Bandwidth $(h)$ & {0.07} & {0.113} \\
+$n_h$ & {6308} & {10587} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 8.684\\Right: 11.498} & {Left: 10.965\\Right: 12.476} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d1y3}Estimates of \(LATE\) of \(D_1\) on
+\(Y_3\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_1$ & {7.923\\(4.491)} & {10.244*\\(5.187)} \\
+Bandwidth $(h)$ & {0.108} & {0.133} \\
+$n_h$ & {7591} & {10370} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 5.512\\Right: 15.448} & {Left: 9.438\\Right: 18.122} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d1y4}Estimates of \(LATE\) of \(D_1\) on
+\(Y_4\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_1$ & {5.336\\(4.794)} & {3.646\\(5.655)} \\
+Bandwidth $(h)$ & {0.068} & {0.081} \\
+$n_h$ & {5759} & {8278} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 9.757\\Right: 15.154} & {Left: 17.119\\Right: 17.202} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d2y1}Estimates of \(LATE\) of \(D_2\) on
+\(Y_1\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_2$ & {6.411*\\(3.908)} & {10.076**\\(4.912)} \\
+Bandwidth $(h)$ & {0.033} & {0.054} \\
+$n_h$ & {7908} & {8249} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 14.126\\Right: 2.781} & {Left: 18.632\\Right: 6.595} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d2y2}Estimates of \(LATE\) of \(D_2\) on
+\(Y_2\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_2$ & {6.016\\(4.207)} & {15.153**\\(6.261)} \\
+Bandwidth $(h)$ & {0.046} & {0.05} \\
+$n_h$ & {7558} & {7305} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 13.641\\Right: 5.571} & {Left: 29.508\\Right: 12.187} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d2y3}Estimates of \(LATE\) of \(D_2\) on
+\(Y_3\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_2$ & {4.040\\(4.483)} & {13.381**\\(6.726)} \\
+Bandwidth $(h)$ & {0.042} & {0.044} \\
+$n_h$ & {7254} & {8076} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 16.49\\Right: 5.598} & {Left: 39.814\\Right: 9.94} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-late_2bws_d2y4}Estimates of \(LATE\) of \(D_2\) on
+\(Y_4\) with one MSE-optimal bandwidth selector for each side}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]X[]},
+hline{2}={1-3}{solid, black, 0.05em},
+hline{1}={1-3}{solid, black, 0.08em},
+hline{8}={1-3}{solid, black, 0.08em},
+column{2-3}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Model 1 & Model 2 \\
+$D_2$ & {7.165\\(4.901)} & {16.768**\\(7.093)} \\
+Bandwidth $(h)$ & {0.039} & {0.042} \\
+$n_h$ & {6887} & {7955} \\
+Kernel & {Triangular} & {Triangular} \\
+Poly. degree & {1} & {2} \\
+$\hat{AMSE}$ & {Left: 20.559\\Right: 6.134} & {Left: 44.769\\Right: 10.653} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-robquant}Estimates of \(LQTE(\tau)\) with the second
+lowest bandwidth}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. All models use the Epanechnikov kernel.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{16}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+cell{1,3-8,10-15}{1}={}{halign=l},
+cell{2,9}{1}={c=5}{halign=l},
+}                     %% tabularray inner close
+& $Y_1$ & $Y_2$ & $Y_3$ & $Y_4$ \\
+$D_1$ & $D_1$ & $D_1$ & $D_1$ & $D_1$ \\
+$\tau = 0.25$ & 0 & 0 & 0 & 0 \\
+$\tau = 0.5$ & -5.061 & 10.555 & 30.043 & 32.258 \\
+$\tau = 0.75$ & 3.863 & 1.015 & 0 & 1.092 \\
+Treatment non-significance test &   &   & * &   \\
+Treatment homogeneity test &   &   &   &   \\
+Bandwidth & 0.068 & 0.065 & 0.047 & 0.047 \\
+$D_2$ & $D_2$ & $D_2$ & $D_2$ & $D_2$ \\
+$\tau = 0.25$ & 0 & 0 & 0 & 0 \\
+$\tau = 0.5$ & 17.689 & 52.982 & -7.183 & -1.397 \\
+$\tau = 0.75$ & 6.95 & 5.944 & 0 & 0 \\
+Treatment non-significance test &   & * &   &   \\
+Treatment homogeneity test &   &   &   &   \\
+Bandwidth & 0.044 & 0.022 & 0.087 & 0.072 \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\begin{table}
+
+\caption{\label{tbl-robquality}Estimates of employment quality effects
+for each treatment and contract using one different bandwidth for each
+category}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE_j$ and the 95 \% confidence interval in parentheses.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{4}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_{OEC}$ & $Y_{FTCm12}$ & $Y_{FTC612}$ & $Y_{FTC05}$ \\
+$D_1$ & {0.021*\\(-0.003, 0.06)} & {0\\(-0.009, 0.005)} & {0.027\\(-0.013, 0.062)} & {-0.029*\\(-0.08, 0.003)} \\
+$D_2$ & {-0.029\\(-0.078, 0.007)} & {0.001\\(-0.003, 0.008)} & {-0.006\\(-0.036, 0.013)} & {0.046**\\(0.013, 0.096)} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\clearpage
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-creponberg2016}
+Crépon B, Van Den Berg GJ (2016) Active {Labor Market Policies}. Annual
+Review of Economics 8:521--546.
+https://doi.org/\href{https://doi.org/10.1146/annurev-economics-080614-115738}{10.1146/annurev-economics-080614-115738}
+
+\bibitem[\citeproctext]{ref-heckmanetal2002}
+Heckman JJ, Heinrich C, Smith J (2002) The {Performance} of {Performance
+Standards}. The Journal of Human Resources 37:778.
+https://doi.org/\href{https://doi.org/10.2307/3069617}{10.2307/3069617}
+
+\bibitem[\citeproctext]{ref-martin2015}
+Martin JP (2015) Activation and active labour market policies in {OECD}
+countries: Stylised facts and evidence on their effectiveness. IZA
+Journal of Labor Policy 4:4.
+https://doi.org/\href{https://doi.org/10.1186/s40173-015-0032-y}{10.1186/s40173-015-0032-y}
+
+\bibitem[\citeproctext]{ref-pacificoetal2018}
+Pacifico D, Neumann D, Immervoll H, Browne J, Bachelet M, Rastrigina O
+(2018) The {OECD Tax-Benefit} model for {Italy}. {Description} of policy
+rules for 2018. OECD
+
+\end{CSLReferences}
+
+
+
+
+\end{document}

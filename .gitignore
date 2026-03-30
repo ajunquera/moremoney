@@ -4,3 +4,6 @@
 .Ruserdata
 inputdata/*
 intermediate/*
+notebooks/*
+manuscript/ee_coverletter.qmd
+manuscript/ee_coverletter.pdf

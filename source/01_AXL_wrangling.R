@@ -1,6 +1,6 @@
 # ...............................................................................
 # ASSEGNO PER IL LAVORO - 01 Data wrangling
-# Author: Álvaro F. Junquera (UAB)
+# Author: Álvaro F. Junquera
 # ...............................................................................
 
 library(tidyverse)
@@ -95,7 +95,7 @@ data <- data %>% filter(dif_ass_prev_hu3 == FALSE)
 data$checking_join <- ifelse(data$axl_profil_fascia == data$intensita, TRUE, FALSE)
 freq(data$checking_join) # There are 0 problematic cases!
 
-data_withproblematic %>%
+scatter_plot <- data_withproblematic %>%
   #filter(dif_ass_prev_hu3 == FALSE) %>%
   mutate(treatment = factor(intensita,
                             levels = c("BASSA", "MEDIA", "ALTA"))) %>%
@@ -109,8 +109,11 @@ data_withproblematic %>%
   labs(y = "Treament received",
        x = "Reversed  score") # saved SVG 395x300
 
+ggsave(filename = "intermediate/script01/scatterplot.svg",  plot = scatter_plot,
+       width = 395 / 96, height = 300 / 96, dpi = 96, # Resolución de 96 dpi (píxeles por pulgada)
+       units = "in", device = "svg")
 
-data_withproblematic %>%
+jitter_plot <- data_withproblematic %>%
   #filter(dif_ass_prev_hu3 == FALSE) %>%
   mutate(treatment = factor(intensita,
                             levels = c("BASSA", "MEDIA", "ALTA"))) %>%
@@ -124,6 +127,9 @@ ggplot(., aes(x = 1 - recal_score_round, y = treat)) +
   labs(y = "Treament received",
        x = "Reversed  score") # saved SVG 395x300
 
+ggsave(filename = "intermediate/script01/jitterplot.svg",  plot = jitter_plot,
+       width = 395 / 96, height = 300 / 96, dpi = 96, # Resolución de 96 dpi (píxeles por pulgada)
+       units = "in", device = "svg")
 
 data %>%
   mutate(treatment = factor(intensita,
@@ -420,8 +426,6 @@ summary <- indi %>%
   )
 
 summary <- adorn_rounding(summary, digits = 2)
-
-# openxlsx::write.xlsx(summary, 'C:/Users/alvar/UAB/OneDrive - Universitat Autònoma de Barcelona/PhD thesis/00A_thesis/3_mix_Veneto/Intermediate_outputs/summary_actualtr2201.xlsx')
 
 # 3. Filtering
 indi_ns <- indi %>%
@@ -756,7 +760,7 @@ ssize <- as.data.frame(cbind("n", (t(samplesize$n))))
 colnames(ssize) <- c("variable", "A", "B", "C", "all")
 summaryf <- rbind(f_asfdx, freqstudy, freqlo, ssize)
 
-#openxlsx::write.xlsx(summaryf, 'intermediate/script01/T2_summaryftable.xlsx')
+write.csv(summaryf, 'intermediate/script01/summaryftable.csv')
 
 
 ## Subsamples according to treatment received --------------------
@@ -776,6 +780,8 @@ indi_ns_ss2$disability <- as.factor(indi_ns_ss2$disabil)
 saveRDS(indi_ns_ss1, "intermediate/script01/indi_ns_ss1_190225.RDS")
 saveRDS(indi_ns_ss2, "intermediate/script01/indi_ns_ss2_190225.RDS")
 saveRDS(longest, "intermediate/script01/longest_190225.RDS")
+
+saveRDS(occupations, "intermediate/script01/occupations.RDS")
 
 #saveRDS(indi_ns_ss1, "indi_ns_ss1_saved.RDS")
 #saveRDS(indi_ns_ss2, "indi_ns_ss2_saved.RDS")

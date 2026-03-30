@@ -1,6 +1,6 @@
 # ...............................................................................
 # ASSEGNO PER IL LAVORO - 02 Main analyses
-# Author: Álvaro F. Junquera (UAB)
+# Author: Álvaro F. Junquera
 # ...............................................................................
 
 library(tidyverse)
@@ -18,7 +18,7 @@ library(QTE.RD)
 library(rddensity)
 library(binsreg)
 
-# Place "rd.categorical.R" in the Project file and then run renv::install(normalizePath("rd.categorical"))
+# Place "rd.categorical.R" in the Project folder and then run renv::install(normalizePath("rd.categorical"))
 # It is a package developed by Ke-Li Xu (2017) and not available in CRAN
 library(rd.categorical)
 
@@ -33,6 +33,8 @@ library(glue)
 indi_ns_ss1 <- readRDS("intermediate/script01/indi_ns_ss1_190225.RDS")
 indi_ns_ss2 <- readRDS("intermediate/script01/indi_ns_ss2_190225.RDS")
 longest <- readRDS("intermediate/script01/longest_190225.RDS")
+dict_ente <- readRDS("intermediate/dict_ente.RDS")
+occupations <- readRDS("intermediate/script01/occupations.RDS")
 
 # Some functions -----------
 
@@ -171,6 +173,95 @@ cm <- c("Conventional" = "Treatment")
 
 
 ## 2.1. Treatment 1 (D1: B vs. A) ------------
+### Hours of treatment ----------
+### Outcome HS: actual treatment received of job search measures
+actualtr_p1kT <- rdrobust(
+  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 1, bwselect = "mserd", cluster = NULL
+)
+summary(actualtr_p1kT)
+
+actualtr_p2kT <- rdrobust(
+  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 2, bwselect = "mserd", cluster = NULL
+)
+summary(actualtr_p2kT)
+
+## With slight change at the bandwidth
+sactualtr_p1kT <- rdrobust(
+  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 1, cluster = NULL,
+  h = actualtr_p1kT$bws[1, 1] - 0.01
+)
+summary(sactualtr_p1kT)
+
+sactualtr_p2kT <- rdrobust(
+  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 2, cluster = NULL,
+  h = actualtr_p2kT$bws[1, 1] - 0.01
+)
+summary(sactualtr_p2kT)
+
+# Table E11
+
+if (!file.exists("intermediate/script02/E11_cont_D1_jshours_nocl.csv")) {
+
+  modelsummary(list(actualtr_p1kT, actualtr_p2kT, sactualtr_p1kT, sactualtr_p2kT),
+               statistic = "std.error", coef_map = cm,
+               stars = c('*' = .1, '**' = .05, '***' = 0.01),
+               output = "intermediate/script02/E11_cont_D1_jshours_nocl.csv")
+
+}
+
+### Outcome HT: actual treatment received of training measures
+prevtr_p1kT <- rdrobust(
+  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 1, bwselect = "mserd", cluster = NULL
+)
+summary(prevtr_p1kT)
+
+prevtr_p2kT <- rdrobust(
+  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 2, bwselect = "mserd", cluster = NULL
+)
+summary(prevtr_p2kT)
+
+# Slight changes at the optimal bw
+sprevtr_p1kT <- rdrobust(
+  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 1, cluster = NULL,
+  h = prevtr_p1kT$bws[1, 1] - 0.01
+)
+summary(sprevtr_p1kT)
+
+sprevtr_p2kT <- rdrobust(
+  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  kernel = "triangular",
+  c = 0, p = 2, cluster = NULL,
+  h = prevtr_p2kT$bws[1, 1] - 0.01
+)
+summary(sprevtr_p2kT)
+
+# Table E12
+
+if (!file.exists("intermediate/script02/E12_cont_D1_trhours_nocl.csv")) {
+
+  modelsummary(list(prevtr_p1kT, prevtr_p2kT, sprevtr_p1kT, sprevtr_p2kT),
+               statistic = "std.error", coef_map = cm,
+               stars = c('*' = .1, '**' = .05, '***' = 0.01),
+               output = "intermediate/script02/E12_cont_D1_trhours_nocl.csv")
+
+}
+
+
+
 ### Quantitative outcomes about employment ----------------
 
 ### Outcome 1.1: days worked post months [1, 6]
@@ -204,12 +295,12 @@ srdd_2_D1ei6_p2kT <- rdrobust(
 summary(srdd_2_D1ei6_p2kT)
 
 # Table E3
-if (!file.exists("intermediate/script02/E3_cont_D1_post6_nocl.docx")) {
+if (!file.exists("intermediate/script02/E3_cont_D1_post6_nocl.csv")) {
 
   modelsummary(list(rddD1ei6_p1kT, rddD1ei6_p2kT, srdd_2_D1ei6_p1kT, srdd_2_D1ei6_p2kT),
                statistic = "std.error", coef_map = cm,
                stars = c('*' = .1, '**' = .05, '***' = 0.01),
-               output = "intermediate/script02/E3_cont_D1_post6_nocl.docx")
+               output = "intermediate/script02/E3_cont_D1_post6_nocl.csv")
 }
 
 
@@ -247,12 +338,12 @@ srddD1ei12_p2kT <- rdrobust(
 summary(srddD1ei12_p2kT)
 
 # Table E4
-if (!file.exists("intermediate/script02/E4_cont_D1_post12_nocl.docx")) {
+if (!file.exists("intermediate/script02/E4_cont_D1_post12_nocl.csv")) {
 
 modelsummary(list(rddD1ei12_p1kT, rddD1ei12_p2kT, srddD1ei12_p1kT, srddD1ei12_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E4_cont_D1_post12_nocl.docx")
+             output = "intermediate/script02/E4_cont_D1_post12_nocl.csv")
 
 }
 
@@ -289,12 +380,12 @@ srddD1ei18_p2kT <- rdrobust(
 summary(srddD1ei18_p2kT)
 
 ## Table E5
-if (!file.exists("intermediate/script02/E5_cont_D1_post18_nocl.docx")) {
+if (!file.exists("intermediate/script02/E5_cont_D1_post18_nocl.csv")) {
 
 modelsummary(list(rddD1ei18_p1kT, rddD1ei18_p2kT, srddD1ei18_p1kT, srddD1ei18_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E5_cont_D1_post18_nocl.docx")
+             output = "intermediate/script02/E5_cont_D1_post18_nocl.csv")
 
 }
 
@@ -331,12 +422,12 @@ srdd24_p2kT <- rdrobust(
 summary(srdd24_p2kT)
 
 # Table E6
-if (!file.exists("intermediate/script02/E6_cont_D1_post24_nocl.docx")) {
+if (!file.exists("intermediate/script02/E6_cont_D1_post24_nocl.csv")) {
 
 modelsummary(list(rdd24_p1kT, rdd24_p2kT, srdd24_p1kT, srdd24_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E6_cont_D1_post24_nocl.docx")
+             output = "intermediate/script02/E6_cont_D1_post24_nocl.csv")
 
 }
 
@@ -405,30 +496,118 @@ indi_ns_ss1_c1$occ2 <- factor(indi_ns_ss1_c1$occ2) # the last category is the ba
 occ2_d1 <- rdcate_multinom(score = indi_ns_ss1_c1$scoringD1_0,
                                    outcome = indi_ns_ss1_c1$occ2)
 
-View(occ2_d1)
+#### Saving
+#### (It will be saved with the results for D2 in the D2 section)
 
+### Qualitative outcomes about creaming ------------
+providers1 <- indi_ns_ss1 %>%
+  left_join(dict_ente, by = c("axl_ente" = "provider")) %>%
+  tabyl(idprovider) %>%
+  mutate(vp100 = valid_percent * 100) %>%
+  arrange(desc(vp100)) %>%
+  mutate(cum_vp100 = cumsum(vp100))
 
+provs_sample75 <- providers1$idprovider[which(providers1$cum_vp100 <= 76)]
 
+indi_ns_ss1_c <- indi_ns_ss1_c %>%
+  left_join(dict_ente, by = c("axl_ente" = "provider"))
 
-### Mechanisms: hours of treatment ----------
+# Binarizing the provider variable
+indi_ns_ss1_cPROV <- indi_ns_ss1_c %>%
+  filter(!is.na(idprovider)) # only 70 NAs out of 22,274 observations
+
+indi_ns_ss1_cPROV <- indi_ns_ss1_cPROV %>%
+  relocate(idprovider, .after = last_col()) %>%
+  mutate(value = "Yes") %>%
+  tidyr::pivot_wider(names_from = idprovider,
+              values_from = value,
+              names_prefix = "provider_",
+              values_fill = "No")
+
+indi_ns_ss1_cPROV <- indi_ns_ss1_cPROV %>%
+  mutate(across(provider_1:provider_94, ~ factor(.x, levels = c("No", "Yes"))))
+
+# Model estimation
+rddD1_prov7 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_7,
+                   score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov1 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_1,
+                      score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov11 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_11,
+                       score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov17 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_17,
+                         score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov28 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_28,
+                      score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov25 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_25,
+                         score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov12 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_12,
+                         score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov4 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_4,
+                      score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov8 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_8,
+                     score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov13 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_13,
+                           score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov16 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_16,
+                      score = indi_ns_ss1_cPROV$scoringD1_0)
+
+rddD1_prov2 <- rdcate_multinom(outcome = indi_ns_ss1_cPROV$provider_2,
+                        score = indi_ns_ss1_cPROV$scoringD1_0)
+
+# Table
+cream_D1 <- data.frame(provider = provs_sample75,
+                       point_estimate = c(rddD1_prov7$pointest, rddD1_prov1$pointest, rddD1_prov11$pointest,
+                                          rddD1_prov17$pointest, rddD1_prov28$pointest, rddD1_prov25$pointest,
+                                          rddD1_prov12$pointest, rddD1_prov4$pointest, rddD1_prov8$pointest,
+                                          rddD1_prov13$pointest, rddD1_prov16$pointest, rddD1_prov2$pointest),
+                       stars = c(rddD1_prov7$stars, rddD1_prov1$stars, rddD1_prov11$stars,
+                                 rddD1_prov17$stars, rddD1_prov28$stars, rddD1_prov25$stars,
+                                 rddD1_prov12$stars, rddD1_prov4$stars, rddD1_prov8$stars,
+                                 rddD1_prov13$stars, rddD1_prov16$stars, rddD1_prov2$stars),
+                       ci = c(rddD1_prov7$ci95, rddD1_prov1$ci95, rddD1_prov11$ci95,
+                              rddD1_prov17$ci95, rddD1_prov28$ci95, rddD1_prov25$ci95,
+                              rddD1_prov12$ci95, rddD1_prov4$ci95, rddD1_prov8$ci95,
+                              rddD1_prov13$ci95, rddD1_prov16$ci95, rddD1_prov2$ci95))
+
+cream_D1$lower_ci <- map_chr(str_extract_all(cream_D1$ci, "-?\\d+(?:\\.\\d+)?"), ~ .x[1])
+cream_D1$upper_ci <- map_chr(str_extract_all(cream_D1$ci, "-?\\d+(?:\\.\\d+)?"), ~ .x[2])
+cream_D1$provider <- factor(cream_D1$provider,
+                            levels = rev(provs_sample75))
+cream_D1$lower_ci <- as.numeric(cream_D1$lower_ci)
+cream_D1$upper_ci <- as.numeric(cream_D1$upper_ci)
+
+saveRDS(cream_D1, "intermediate/script02/cream_D1.RDS")
+
+## 2.2. Treatment 2 (D2: C vs. B) ----------
+### Hours of treatment -----------------
 ### Outcome HS: actual treatment received of job search measures
-actualtr_p1kT <- rdrobust(
-  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+actualtr_p1kT_d2 <- rdrobust(
+  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 1, bwselect = "mserd", cluster = NULL
 )
-summary(actualtr_p1kT)
+summary(actualtr_p1kT_d2)
 
-actualtr_p2kT <- rdrobust(
-  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+actualtr_p2kT_d2 <- rdrobust(
+  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 2, bwselect = "mserd", cluster = NULL
 )
-summary(actualtr_p2kT)
+summary(actualtr_p2kT_d2)
 
-## With slight change at the bandwidth
+# Slight changes at the optimal bw
 sactualtr_p1kT <- rdrobust(
-  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 1, cluster = NULL,
   h = actualtr_p1kT$bws[1, 1] - 0.01
@@ -436,42 +615,42 @@ sactualtr_p1kT <- rdrobust(
 summary(sactualtr_p1kT)
 
 sactualtr_p2kT <- rdrobust(
-  y = indi_ns_ss1$jshours, x = indi_ns_ss1$scoringD1_0,
+  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 2, cluster = NULL,
   h = actualtr_p2kT$bws[1, 1] - 0.01
 )
 summary(sactualtr_p2kT)
 
-# Table E11
 
-if (!file.exists("intermediate/script02/E11_cont_D1_jshours_nocl.docx")) {
+# Table E13
+if (!file.exists("intermediate/script02/E13_cont_D2_jshours_nocl.csv")) {
 
-modelsummary(list(actualtr_p1kT, actualtr_p2kT, sactualtr_p1kT, sactualtr_p2kT),
-             statistic = "std.error", coef_map = cm,
-             stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E11_cont_D1_jshours_nocl.docx")
+  modelsummary(list(actualtr_p1kT_d2, actualtr_p2kT_d2, sactualtr_p1kT, sactualtr_p2kT),
+               statistic = "std.error", coef_map = cm,
+               stars = c('*' = .1, '**' = .05, '***' = 0.01),
+               output = "intermediate/script02/E13_cont_D2_jshours_nocl.csv")
 
 }
 
-### Outcome HT: actual treatment received of training measures
-prevtr_p1kT <- rdrobust(
-  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+#### Outcome HT: actual treatment received of training measures
+prevtr_p1kT_d2 <- rdrobust(
+  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 1, bwselect = "mserd", cluster = NULL
 )
-summary(prevtr_p1kT)
+summary(prevtr_p1kT_d2)
 
-prevtr_p2kT <- rdrobust(
-  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+prevtr_p2kT_d2 <- rdrobust(
+  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 2, bwselect = "mserd", cluster = NULL
 )
-summary(prevtr_p2kT)
+summary(prevtr_p2kT_d2)
 
 # Slight changes at the optimal bw
 sprevtr_p1kT <- rdrobust(
-  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 1, cluster = NULL,
   h = prevtr_p1kT$bws[1, 1] - 0.01
@@ -479,25 +658,23 @@ sprevtr_p1kT <- rdrobust(
 summary(sprevtr_p1kT)
 
 sprevtr_p2kT <- rdrobust(
-  y = indi_ns_ss1$attiv_form_ore_prev, x = indi_ns_ss1$scoringD1_0,
+  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
   kernel = "triangular",
   c = 0, p = 2, cluster = NULL,
   h = prevtr_p2kT$bws[1, 1] - 0.01
 )
 summary(sprevtr_p2kT)
 
-# Table E12
+# Table E14
+if (!file.exists("intermediate/script02/E14_cont_D2_trhours_nocl.csv")) {
 
-if (!file.exists("intermediate/script02/E12_cont_D1_trhours_nocl.docx")) {
-
-modelsummary(list(prevtr_p1kT, prevtr_p2kT, sprevtr_p1kT, sprevtr_p2kT),
-             statistic = "std.error", coef_map = cm,
-             stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E12_cont_D1_trhours_nocl.docx")
+  modelsummary(list(prevtr_p1kT_d2, prevtr_p2kT_d2, sprevtr_p1kT, sprevtr_p2kT),
+               statistic = "std.error", coef_map = cm,
+               stars = c('*' = .1, '**' = .05, '***' = 0.01),
+               output = "intermediate/script02/E14_cont_D2_trhours_nocl.csv")
 
 }
 
-## 2.2. Treatment 2 (D2: C vs. B) ----------
 
 ### Quantitative outcomes on employment -----------------
 
@@ -534,12 +711,12 @@ srddei6_p2kT <- rdrobust(
 summary(srddei6_p2kT)
 
 # Table E7
-if (!file.exists("intermediate/script02/E7_cont_D2_post6_nocl.docx")) {
+if (!file.exists("intermediate/script02/E7_cont_D2_post6_nocl.csv")) {
 
 modelsummary(list(rddei6_p1kT, rddei6_p2kT, srddei6_p1kT, srddei6_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E7_cont_D2_post6_nocl.docx")
+             output = "intermediate/script02/E7_cont_D2_post6_nocl.csv")
 }
 
 ### Outcome 1.2: days worked post [7, 12] months
@@ -575,12 +752,12 @@ srddei12_p2kT <- rdrobust(
 summary(srddei12_p2kT)
 
 # Table E8
-if (!file.exists("intermediate/script02/E8_cont_D2_post712_nocl.docx")) {
+if (!file.exists("intermediate/script02/E8_cont_D2_post712_nocl.csv")) {
 
 modelsummary(list(rddei12_p1kT, rddei12_p2kT, srddei12_p1kT, srddei12_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E8_cont_D2_post712_nocl.docx")
+             output = "intermediate/script02/E8_cont_D2_post712_nocl.csv")
 
 }
 
@@ -617,12 +794,12 @@ srddei18_p2kT <- rdrobust(
 summary(srddei18_p2kT)
 
 # Table E9
-if (!file.exists("intermediate/script02/E9_cont_D2_post1318_nocl.docx")) {
+if (!file.exists("intermediate/script02/E9_cont_D2_post1318_nocl.csv")) {
 
 modelsummary(list(rddei18_p1kT, rddei18_p2kT, srddei18_p1kT, srddei18_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E9_cont_D2_post1318_nocl.docx")
+             output = "intermediate/script02/E9_cont_D2_post1318_nocl.csv")
 
 }
 
@@ -661,12 +838,12 @@ summary(srdd24_p2kT)
 cm <- c("Conventional" = "Treatment")
 
 # Table E10
-if (!file.exists("intermediate/script02/E10_cont_D2_post1924_nocl.docx")) {
+if (!file.exists("intermediate/script02/E10_cont_D2_post1924_nocl.csv")) {
 
 modelsummary(list(rddei24_p1kT, rddei24_p2kT, srdd24_p1kT, srdd24_p2kT),
              statistic = "std.error", coef_map = cm,
              stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E10_cont_D2_post1924_nocl.docx")
+             output = "intermediate/script02/E10_cont_D2_post1924_nocl.csv")
 
 }
 
@@ -719,10 +896,24 @@ T5_latej <- data.frame(treat = c("D1", "", "D2", ""),
 
 T5_latej
 
-if (!file.exists("intermediate/script02/T5_latej.xlsx")) {
+if (!file.exists("intermediate/script02/T5_latej.csv")) {
 
-  openxlsx::write.xlsx(T5_latej, 'intermediate/script02/T5_latej.xlsx')
+  write.csv(T5_latej, 'intermediate/script02/T5_latej.csv')
 
+}
+
+table_latej_compact <- T5_latej %>%
+  mutate(
+    across(Y_OEC:Y_05, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      row_number() == 3 ~ str_c(.x[row_number() %in% c(3,4)], collapse = "<br>"),
+      TRUE ~ .x
+    ))
+  ) %>%
+  slice(-c(2,4))
+
+if (!file.exists("intermediate/script02/table_latej_compact.csv")) {
+  write.csv(table_latej_compact, "intermediate/script02/table_latej_compact.csv")
 }
 
 ### Outcome 6:
@@ -751,100 +942,123 @@ T6_latej <- data.frame(treat = c("D1", "", "D2", ""),
 T6_latej
 
 
-if (!file.exists("intermediate/script02/T6_latej.xlsx")) {
+if (!file.exists("intermediate/script02/T6_latej.csv")) {
 
-  openxlsx::write.xlsx(T6_latej, 'intermediate/script02/T6_latej.xlsx')
+  write.csv(T6_latej, 'intermediate/script02/T6_latej.csv')
 
+}
+
+table_latejaward_compact <- T6_latej %>%
+  mutate(
+    across(P_OEC:P_612, ~ case_when(
+      row_number() == 1 ~ str_c(.x[row_number() %in% c(1,2)], collapse = "<br>"),
+      row_number() == 3 ~ str_c(.x[row_number() %in% c(3,4)], collapse = "<br>"),
+      TRUE ~ .x
+    ))
+  ) %>%
+  slice(-c(2,4))
+
+if (!file.exists("intermediate/script02/table_latejaward_compact.csv")) {
+  write.csv(table_latejaward_compact, "intermediate/script02/table_latejaward_compact.csv")
 }
 
 ### Saving indi_ns_ss2_c
 #saveRDS(indi_ns_ss2_c, "intermediate/script02/indi_ns_ss2_c.RDS")
 
-### Mechanisms: hours of treatment -----------------
-### Outcome HS: actual treatment received of job search measures
-actualtr_p1kT_d2 <- rdrobust(
-  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 1, bwselect = "mserd", cluster = NULL
-)
-summary(actualtr_p1kT_d2)
 
-actualtr_p2kT_d2 <- rdrobust(
-  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 2, bwselect = "mserd", cluster = NULL
-)
-summary(actualtr_p2kT_d2)
+### Qualitative outcomes about creaming --------------
+providers2 <- indi_ns_ss2 %>%
+  left_join(dict_ente, by = c("axl_ente" = "provider")) %>%
+  tabyl(idprovider) %>%
+  mutate(vp100 = valid_percent * 100) %>%
+  arrange(desc(vp100)) %>%
+  mutate(cum_vp100 = cumsum(vp100))
 
-# Slight changes at the optimal bw
-sactualtr_p1kT <- rdrobust(
-  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 1, cluster = NULL,
-  h = actualtr_p1kT$bws[1, 1] - 0.01
-)
-summary(sactualtr_p1kT)
+provs_sample75_d2 <- providers2$idprovider[which(providers2$cum_vp100 <= 76)]
 
-sactualtr_p2kT <- rdrobust(
-  y = indi_ns_ss2$jshours, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 2, cluster = NULL,
-  h = actualtr_p2kT$bws[1, 1] - 0.01
-)
-summary(sactualtr_p2kT)
+indi_ns_ss2_c <- indi_ns_ss2_c %>%
+  left_join(dict_ente, by = c("axl_ente" = "provider"))
+
+# Binarizing the provider variable
+indi_ns_ss2_cPROV <- indi_ns_ss2_c %>%
+  filter(!is.na(idprovider))
+
+indi_ns_ss2_cPROV <- indi_ns_ss2_cPROV %>%
+  relocate(idprovider, .after = last_col()) %>%
+  mutate(value = "Yes") %>%
+  tidyr::pivot_wider(names_from = idprovider,
+                     values_from = value,
+                     names_prefix = "provider_",
+                     values_fill = "No")
+
+indi_ns_ss2_cPROV <- indi_ns_ss2_cPROV %>%
+  mutate(across(provider_1:provider_94, ~ factor(.x, levels = c("No", "Yes"))))
+
+# Model estimation
+rddD2_prov7 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_7,
+                               score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov1 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_1,
+                               score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov11 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_11,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov28 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_28,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov17 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_17,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov25 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_25,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov12 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_12,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov4 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_4,
+                               score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov8 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_8,
+                               score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov2 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_2,
+                               score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov16 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_16,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov5 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_5,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
+
+rddD2_prov13 <- rdcate_multinom(outcome = indi_ns_ss2_cPROV$provider_13,
+                                score = indi_ns_ss2_cPROV$scoringD2_0)
 
 
-# Table E13
-if (!file.exists("intermediate/script02/E13_cont_D2_jshours_nocl.docx")) {
+# Table
+cream_D2 <- data.frame(provider = provs_sample75_d2,
+                       point_estimate = c(rddD2_prov7$pointest, rddD2_prov1$pointest, rddD2_prov11$pointest,
+                                          rddD2_prov28$pointest, rddD2_prov17$pointest, rddD2_prov25$pointest,
+                                          rddD2_prov12$pointest, rddD2_prov4$pointest, rddD2_prov8$pointest,
+                                          rddD2_prov2$pointest, rddD2_prov16$pointest, rddD2_prov5$pointest, rddD2_prov13$pointest),
+                       stars = c(rddD2_prov7$stars, rddD2_prov1$stars, rddD2_prov11$stars,
+                                 rddD2_prov28$stars, rddD2_prov17$stars, rddD2_prov25$stars,
+                                 rddD2_prov12$stars, rddD2_prov4$stars, rddD2_prov8$stars,
+                                 rddD2_prov2$stars, rddD2_prov16$stars, rddD2_prov5$stars, rddD2_prov13$stars),
+                       ci = c(rddD2_prov7$ci95, rddD2_prov1$ci95, rddD2_prov11$ci95,
+                              rddD2_prov28$ci95, rddD2_prov17$ci95, rddD2_prov25$ci95,
+                              rddD2_prov12$ci95, rddD2_prov4$ci95, rddD2_prov8$ci95,
+                              rddD2_prov2$ci95, rddD2_prov16$ci95, rddD2_prov5$ci95, rddD2_prov13$ci95))
 
-modelsummary(list(actualtr_p1kT_d2, actualtr_p2kT_d2, sactualtr_p1kT, sactualtr_p2kT),
-             statistic = "std.error", coef_map = cm,
-             stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E13_cont_D2_jshours_nocl.docx")
+cream_D2$lower_ci <- map_chr(str_extract_all(cream_D2$ci, "-?\\d+(?:\\.\\d+)?"), ~ .x[1])
+cream_D2$upper_ci <- map_chr(str_extract_all(cream_D2$ci, "-?\\d+(?:\\.\\d+)?"), ~ .x[2])
+cream_D2$provider <- factor(cream_D2$provider,
+                            levels = rev(provs_sample75_d2))
+cream_D2$lower_ci <- as.numeric(cream_D2$lower_ci)
+cream_D2$upper_ci <- as.numeric(cream_D2$upper_ci)
 
-}
+saveRDS(cream_D2, "intermediate/script02/cream_D2.RDS")
 
-#### Outcome HT: actual treatment received of training measures
-prevtr_p1kT_d2 <- rdrobust(
-  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 1, bwselect = "mserd", cluster = NULL
-)
-summary(prevtr_p1kT_d2)
-
-prevtr_p2kT_d2 <- rdrobust(
-  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 2, bwselect = "mserd", cluster = NULL
-)
-summary(prevtr_p2kT_d2)
-
-# Slight changes at the optimal bw
-sprevtr_p1kT <- rdrobust(
-  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 1, cluster = NULL,
-  h = prevtr_p1kT$bws[1, 1] - 0.01
-)
-summary(sprevtr_p1kT)
-
-sprevtr_p2kT <- rdrobust(
-  y = indi_ns_ss2$attiv_form_ore_prev, x = indi_ns_ss2$scoringD2_0,
-  kernel = "triangular",
-  c = 0, p = 2, cluster = NULL,
-  h = prevtr_p2kT$bws[1, 1] - 0.01
-)
-summary(sprevtr_p2kT)
-
-# Table E14
-if (!file.exists("intermediate/script02/E14_cont_D2_trhours_nocl.docx")) {
-
-modelsummary(list(prevtr_p1kT_d2, prevtr_p2kT_d2, sprevtr_p1kT, sprevtr_p2kT),
-             statistic = "std.error", coef_map = cm,
-             stars = c('*' = .1, '**' = .05, '***' = 0.01),
-             output = "intermediate/script02/E14_cont_D2_trhours_nocl.docx")
-
-}
 
 ## 2.3. Writing the Stata script to estimate AMSE ---------------
 
@@ -1021,23 +1235,30 @@ container_lqte_d2 <- data.frame(object = c("q1_pe", "q2_pe", "q3_pe", "nonsign_t
 
 ### Outcome 1.1: days worked post months [1, 6] -------------
 # 1) Estimate bandwidth
-bwd1o1_bdy <- rdq.bandwidth(y = outcome1, x = running1, d = d1, x0 = 0,
-                            cv = 1, cov = 0, pm.each = 0,
-                            bdy = 1, val = seq(0.01, 0.1, by = 0.01))
+
+if(!file.exists("intermediate/script02/lqte/bwd1o1_bdyint.RDS")){
+
+  bwd1o1_bdy <- rdq.bandwidth(y = outcome1, x = running1, d = d1, x0 = 0,
+                              cv = 1, cov = 0, pm.each = 0,
+                              bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o1_int <- rdq.bandwidth(y = outcome1, x = running1, d = d1, x0 = 0,
-                            cv = 1, cov = 0, pm.each = 0,
-                            bdy = 0, val = seq(0.01, 0.1, by = 0.01))
+  bwd1o1_int <- rdq.bandwidth(y = outcome1, x = running1, d = d1, x0 = 0,
+                              cv = 1, cov = 0, pm.each = 0,
+                              bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o1_bdyint <- data.frame(cv = c(bwd1o1_bdy$cv, bwd1o1_int$cv),
-                            bdy = c(bwd1o1_bdy$opt.m, bwd1o1_bdy$opt.p),
-                            int = c(bwd1o1_int$opt.m, bwd1o1_int$opt.p))
+  bwd1o1_bdyint <- data.frame(cv = c(bwd1o1_bdy$cv, bwd1o1_int$cv),
+                              bdy = c(bwd1o1_bdy$opt.m, bwd1o1_bdy$opt.p),
+                              int = c(bwd1o1_int$opt.m, bwd1o1_int$opt.p))
 
-#saveRDS(bwd1o1_bdyint, "intermediate/script02/lqte/bwd1o1_bdyint.RDS")
-bwd1o1_bdyint <- readRDS("intermediate/script02/lqte/bwd1o1_bdyint.RDS")
+  saveRDS(bwd1o1_bdyint, "intermediate/script02/lqte/bwd1o1_bdyint.RDS")
 
+}else{
+
+  bwd1o1_bdyint <- readRDS("intermediate/script02/lqte/bwd1o1_bdyint.RDS")
+
+}
 
 bwd1o1_min <- min(bwd1o1_bdyint[, 2:3])
 
@@ -1150,22 +1371,30 @@ container_lqte_d1$y1[5] <- if(Wd1o1_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.2: days worked post months [7, 12] ---------------
 # 1) Estimate bandwidth
-bwd1o2_bdy <- rdq.bandwidth(y = outcome2, x = running1, d = d1, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd1o2_bdyint.RDS")){
+
+  bwd1o2_bdy <- rdq.bandwidth(y = outcome2, x = running1, d = d1, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o2_int <- rdq.bandwidth(y = outcome2, x = running1, d = d1, x0 = 0,
+  bwd1o2_int <- rdq.bandwidth(y = outcome2, x = running1, d = d1, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o2_bdyint <- data.frame(cv = c(bwd1o2_bdy$cv, bwd1o2_int$cv),
+  bwd1o2_bdyint <- data.frame(cv = c(bwd1o2_bdy$cv, bwd1o2_int$cv),
                             bdy = c(bwd1o2_bdy$opt.m, bwd1o2_bdy$opt.p),
                             int = c(bwd1o2_int$opt.m, bwd1o2_int$opt.p))
 
-#saveRDS(bwd1o2_bdyint, "intermediate/script02/lqte/bwd1o2_bdyint.RDS")
-bwd1o2_bdyint <- readRDS("intermediate/script02/lqte/bwd1o2_bdyint.RDS")
+  saveRDS(bwd1o2_bdyint, "intermediate/script02/lqte/bwd1o2_bdyint.RDS")
+
+}else{
+
+  bwd1o2_bdyint <- readRDS("intermediate/script02/lqte/bwd1o2_bdyint.RDS")
+
+}
 
 bwd1o2_min <- min(bwd1o2_bdyint)
 
@@ -1242,22 +1471,30 @@ container_lqte_d1$y2[5] <- if(Wd1o2_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.3: days worked post months [13, 18] ------------
 # 1) Estimate bandwidth
-bwd1o3_bdy <- rdq.bandwidth(y = outcome3, x = running1, d = d1, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd1o3_bdyint.RDS")){
+
+  bwd1o3_bdy <- rdq.bandwidth(y = outcome3, x = running1, d = d1, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o3_int <- rdq.bandwidth(y = outcome3, x = running1, d = d1, x0 = 0,
+  bwd1o3_int <- rdq.bandwidth(y = outcome3, x = running1, d = d1, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd1o3_bdyint <- data.frame(cv = c(bwd1o3_bdy$cv, bwd1o3_int$cv),
+  bwd1o3_bdyint <- data.frame(cv = c(bwd1o3_bdy$cv, bwd1o3_int$cv),
                             bdy = c(bwd1o3_bdy$opt.m, bwd1o3_bdy$opt.p),
                             int = c(bwd1o3_int$opt.m, bwd1o3_int$opt.p))
 
-#saveRDS(bwd1o3_bdyint, "intermediate/script02/lqte/bwd1o3_bdyint.RDS")
-bwd1o3_bdyint <- readRDS("intermediate/script02/lqte/bwd1o3_bdyint.RDS")
+  saveRDS(bwd1o3_bdyint, "intermediate/script02/lqte/bwd1o3_bdyint.RDS")
+
+}else{
+
+  bwd1o3_bdyint <- readRDS("intermediate/script02/lqte/bwd1o3_bdyint.RDS")
+
+}
 
 bwd1o3_min <- min(bwd1o3_bdyint)
 
@@ -1331,25 +1568,33 @@ container_lqte_d1$y3[5] <- if(Wd1o3_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.4: days worked post months [19, 24] -------------
 # 1) Estimate bandwidth
-bwd1o4_bdy <- rdq.bandwidth(y = outcome4, x = running1, d = d1, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd1o4_bdyint.RDS")){
+
+  bwd1o4_bdy <- rdq.bandwidth(y = outcome4, x = running1, d = d1, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
-bwd1o4_bdy_min <- min(bwd1o4_bdy$opt.m, bwd1o4_bdy$opt.p)
+  bwd1o4_bdy_min <- min(bwd1o4_bdy$opt.m, bwd1o4_bdy$opt.p)
 
-bwd1o4_int <- rdq.bandwidth(y = outcome4, x = running1, d = d1, x0 = 0,
+  bwd1o4_int <- rdq.bandwidth(y = outcome4, x = running1, d = d1, x0 = 0,
                         cv = 1, cov = 0, pm.each = 0,
                         bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
-bwd1o4_int_min <- min(bwd1o4_int$opt.m, bwd1o4_int$opt.p)
+  bwd1o4_int_min <- min(bwd1o4_int$opt.m, bwd1o4_int$opt.p)
 
 
-bwd1o4_bdyint <- data.frame(cv = c(bwd1o4_bdy$cv, bwd1o4_int$cv),
+  bwd1o4_bdyint <- data.frame(cv = c(bwd1o4_bdy$cv, bwd1o4_int$cv),
                             bdy = c(bwd1o4_bdy$opt.m, bwd1o4_bdy$opt.p),
                             int = c(bwd1o4_int$opt.m, bwd1o4_int$opt.p))
 
-#saveRDS(bwd1o4_bdyint, "intermediate/script02/lqte/bwd1o4_bdyint.RDS")
-bwd1o4_bdyint <- readRDS("intermediate/script02/lqte/bwd1o4_bdyint.RDS")
+  saveRDS(bwd1o4_bdyint, "intermediate/script02/lqte/bwd1o4_bdyint.RDS")
+
+}else{
+
+  bwd1o4_bdyint <- readRDS("intermediate/script02/lqte/bwd1o4_bdyint.RDS")
+
+}
 
 bwd1o4_min <- min(bwd1o4_bdyint)
 
@@ -1432,23 +1677,30 @@ container_lqte_d1 <- readRDS("intermediate/script02/lqte/container_lqte_d1.RDS")
 
 ### Outcome 1.1: days worked post months [1, 6] ------------
 # 1- Estimate bandwidth
-bwd2o1_bdy <- rdq.bandwidth(y = outcome1_d2, x = running2, d = d2, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd2o1_bdyint.RDS")){
+
+  bwd2o1_bdy <- rdq.bandwidth(y = outcome1_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o1_int <- rdq.bandwidth(y = outcome1_d2, x = running2, d = d2, x0 = 0,
+  bwd2o1_int <- rdq.bandwidth(y = outcome1_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o1_bdyint <- data.frame(cv = c(bwd2o1_bdy$cv, bwd2o1_int$cv),
+  bwd2o1_bdyint <- data.frame(cv = c(bwd2o1_bdy$cv, bwd2o1_int$cv),
                             bdy = c(bwd2o1_bdy$opt.m, bwd2o1_bdy$opt.p),
                             int = c(bwd2o1_int$opt.m, bwd2o1_int$opt.p))
 
-#saveRDS(bwd2o1_bdyint, "intermediate/script02/lqte/bwd2o1_bdyint.RDS")
-bwd2o1_bdyint <- readRDS("intermediate/script02/lqte/bwd2o1_bdyint.RDS")
+  saveRDS(bwd2o1_bdyint, "intermediate/script02/lqte/bwd2o1_bdyint.RDS")
 
+}else{
+
+  bwd2o1_bdyint <- readRDS("intermediate/script02/lqte/bwd2o1_bdyint.RDS")
+
+}
 
 bwd2o1_min <- min(bwd2o1_bdyint[, 2:3]) # MSE-optimal
 
@@ -1515,22 +1767,30 @@ container_lqte_d2$y1[5] <- if(Wd2o1_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.2: days worked post months [7, 12] ----------------
 # 1- Estimate bandwidth
-bwd2o2_bdy <- rdq.bandwidth(y = outcome2_d2, x = running2, d = d2, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd2o2_bdyint.RDS")){
+
+  bwd2o2_bdy <- rdq.bandwidth(y = outcome2_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o2_int <- rdq.bandwidth(y = outcome2_d2, x = running2, d = d2, x0 = 0,
+  bwd2o2_int <- rdq.bandwidth(y = outcome2_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o2_bdyint <- data.frame(cv = c(bwd2o1_bdy$cv, bwd2o2_int$cv),
+  bwd2o2_bdyint <- data.frame(cv = c(bwd2o1_bdy$cv, bwd2o2_int$cv),
                             bdy = c(bwd2o2_bdy$opt.m, bwd2o2_bdy$opt.p),
                             int = c(bwd2o2_int$opt.m, bwd2o2_int$opt.p))
 
-#saveRDS(bwd2o2_bdyint, "intermediate/script02/lqte/bwd2o2_bdyint.RDS")
-bwd2o2_bdyint <- readRDS("intermediate/script02/lqte/bwd2o2_bdyint.RDS")
+  saveRDS(bwd2o2_bdyint, "intermediate/script02/lqte/bwd2o2_bdyint.RDS")
+
+}else{
+
+  bwd2o2_bdyint <- readRDS("intermediate/script02/lqte/bwd2o2_bdyint.RDS")
+
+}
 
 bwd2o2_min <- min(bwd2o2_bdyint[, 2:3])
 
@@ -1606,22 +1866,30 @@ container_lqte_d2$y2[5] <- if(Wd2o2_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.3: days worked post months [13, 18] ----------------
 # 1- Estimate bandwidth
-bwd2o3_bdy <- rdq.bandwidth(y = outcome3_d2, x = running2, d = d2, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd2o3_bdyint.RDS")){
+
+  bwd2o3_bdy <- rdq.bandwidth(y = outcome3_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o3_int <- rdq.bandwidth(y = outcome3_d2, x = running2, d = d2, x0 = 0,
+  bwd2o3_int <- rdq.bandwidth(y = outcome3_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o3_bdyint <- data.frame(cv = c(bwd2o3_bdy$cv, bwd2o3_int$cv),
+  bwd2o3_bdyint <- data.frame(cv = c(bwd2o3_bdy$cv, bwd2o3_int$cv),
                             bdy = c(bwd2o3_bdy$opt.m, bwd2o3_bdy$opt.p),
                             int = c(bwd2o3_int$opt.m, bwd2o3_int$opt.p))
 
-#saveRDS(bwd2o3_bdyint, "intermediate/script02/lqte/bwd2o3_bdyint.RDS")
-bwd2o3_bdyint <- readRDS("intermediate/script02/lqte/bwd2o3_bdyint.RDS")
+  saveRDS(bwd2o3_bdyint, "intermediate/script02/lqte/bwd2o3_bdyint.RDS")
+
+}else{
+
+  bwd2o3_bdyint <- readRDS("intermediate/script02/lqte/bwd2o3_bdyint.RDS")
+
+}
 
 bwd2o3_min <- min(bwd2o3_bdyint[, 2:3]) # MSE-optimal
 
@@ -1697,23 +1965,30 @@ container_lqte_d2$y3[5] <- if(Wd2o3_signhomo_nz$p.value$homogeneity[1] < 0.01) {
 
 ### Outcome 1.4: days worked post months [19, 24] ---------------
 # 1- Estimate bandwidth
-bwd2o4_bdy <- rdq.bandwidth(y = outcome4_d2, x = running2, d = d2, x0 = 0,
+
+if(!file.exists("intermediate/script02/lqte/bwd2o4_bdyint.RDS")){
+
+  bwd2o4_bdy <- rdq.bandwidth(y = outcome4_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 1, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o4_int <- rdq.bandwidth(y = outcome4_d2, x = running2, d = d2, x0 = 0,
+  bwd2o4_int <- rdq.bandwidth(y = outcome4_d2, x = running2, d = d2, x0 = 0,
                             cv = 1, cov = 0, pm.each = 0,
                             bdy = 0, val = seq(0.01, 0.1, by = 0.01))
 
 
-bwd2o4_bdyint <- data.frame(cv = c(bwd2o4_bdy$cv, bwd2o4_int$cv),
+  bwd2o4_bdyint <- data.frame(cv = c(bwd2o4_bdy$cv, bwd2o4_int$cv),
                             bdy = c(bwd2o4_bdy$opt.m, bwd2o4_bdy$opt.p),
                             int = c(bwd2o4_int$opt.m, bwd2o4_int$opt.p))
 
-#saveRDS(bwd2o4_bdyint, "intermediate/script02/lqte/bwd2o4_bdyint.RDS")
-bwd2o4_bdyint <- readRDS("intermediate/script02/lqte/bwd2o4_bdyint.RDS")
+  saveRDS(bwd2o4_bdyint, "intermediate/script02/lqte/bwd2o4_bdyint.RDS")
 
+}else{
+
+  bwd2o4_bdyint <- readRDS("intermediate/script02/lqte/bwd2o4_bdyint.RDS")
+
+}
 
 bwd2o4_min <- min(bwd2o4_bdyint[, 2:3])
 

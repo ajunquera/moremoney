@@ -1,0 +1,1862 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  11pt]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{graphicx}
+\usepackage{bbm}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage[nomarginpar]{geometry}
+\usepackage{setspace}
+%\usepackage{natbib}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{tabularx, calc}
+\usepackage{threeparttable}
+\usepackage{picinpar}
+\usepackage{longtable}
+\usepackage{ae}
+\usepackage{float}
+\usepackage{morefloats}
+\usepackage{palatino}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{adjustbox}
+\usepackage{booktabs}
+\usepackage[normalem]{ulem}
+\usepackage{ragged2e}
+\usepackage{changepage}
+\usepackage{longtable}
+%\usepackage{graphics}
+%\usepackage[tableposition=top]{caption}
+
+\geometry{left=1.0in,right=1.0in,top=1.0in,bottom=1.0in}
+\onehalfspacing
+\usepackage{float}
+\usepackage{tabularray}
+\usepackage[normalem]{ulem}
+\usepackage{graphicx}
+\usepackage{rotating}
+\UseTblrLibrary{siunitx}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={More money, more effect? Employment effects of job search services of different intensity},
+  pdfauthor={Álvaro F. Junquera},
+  pdfkeywords={active labour market policies, job search assistance, job
+search intermediation, public employment services, voucher},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{More money, more effect? Employment effects of job search
+services of different intensity}
+\author{Álvaro F. Junquera}
+\date{March 30, 2026}
+\begin{document}
+\def\spacingset#1{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize} \spacingset{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\date{\href{https://osf.io/preprints/socarxiv/rjshu}{Link to Latest version}\\ \vspace{1em}  Last updated March
+30, 2026}
+\title{More money, more effect? Employment effects of job search
+services of different intensity}
+\author{
+Álvaro F. Junquera\thanks{Correspondence: alvaro.junquera@bsc.es, ORCID:
+0000-0003-0080-7608. We thank the collaboration of the public employment
+office of Veneto. We also appreciate the suggestions offered by Enrico
+Rettore, the help offered by Jungmo Yoon, and the commentaries made by
+discussants of the 1st Workshop on Comparative Social and Public Policy,
+the 16th Spanish Labour Economics meeting, the 39th Conference of the
+Italian Association of Labour Economics, and the 4th Workshop on
+International Trends in Economic Research. This article has been
+developed as part of the PhD programme in Sociology of the Universitat
+Autònoma de Barcelona (UAB) and the PhD programme in Economics and
+Management of the Università degli Studi di Padova (UNIPD).}\\
+Barcelona Supercomputing Center (BSC-CNS)\\
+}
+\maketitle
+
+\bigskip
+\bigskip
+ % added by AFJ
+\begin{abstract}
+Job search services modestly raise employment, but it is far from clear
+whether spending more on each participant improves outcomes further. We
+address this question by studying Assegno per il Lavoro, an Italian
+active labour market programme that assigns jobseekers to treatment
+groups with increasing endowments of job search services. Each
+intervention is made up of a voucher to fund job search assistance and a
+performance-based payment related to job search intermediation.
+Participants are assigned to groups with treatment endowments that
+increase according to a scoring variable. Leveraging this design, we
+apply a regression discontinuity analysis to estimate effects on both
+employment duration and employment quality. We find that providing a
+larger voucher for job search assistance does not increase take-up of
+the service, limiting its potential impact on employment. On employment
+duration, effects of higher endowments after 18 months are essentially
+null for both the average and the quartiles of days employed. On
+employment quality, we find that the intermediate endowment slightly
+increases the length of the contracts. Moreover, a design with different
+performance payments for job search intermediation seems to deter cream
+skimming, since workers are not discriminated in their access to the
+services. These results highlight both the risks of vouchers to
+implement public interventions and the potential of differentiated
+performance payments to deter cream skimming.
+\end{abstract}
+ % added by AFJ
+
+\bigskip
+\noindent%
+{\it Keywords:} active labour market policies, job search
+assistance, job search intermediation, public employment
+services, voucher
+\vfill
+
+ % added by AFJ
+\noindent%
+{\it JEL codes:} J64, J68, C21
+\vfill
+
+
+\newpage
+\spacingset{1.2} % DON'T change the spacing!
+
+\section{Introduction}\label{sec-intro}
+
+Job search services are a type of active labour market policy (ALMP)
+usually qualified as effective to slightly increase the probability of
+employment (\citeproc{ref-cardetal2018}{Card et al. 2018};
+\citeproc{ref-voorenetal2019}{Vooren et al. 2019}). However, designing a
+programme like this requires knowledge of the specific tools and design
+features that optimize the average treatment effect. On the tools,
+recent research proposes to separate job search assistance from
+intermediation, suggesting that they influence the outcome through
+different mechanisms (\citeproc{ref-cheungetal2025}{Cheung et al.
+2025}). This distinction has not been addressed in previous
+meta-analyses, which have overlooked the differences between the
+assistance and intermediation mechanisms. In contrast, we analyze a
+programme that allows a particular focus on job search intermediation, a
+mechanism underexplored in the prior literature. On the design features,
+aspects like the intensity of the actions have been discussed when
+comparing different programmes. Literature reviews in economics
+(\citeproc{ref-voorenetal2019}{Vooren et al. 2019}) and psychology
+(\citeproc{ref-liuetal2014}{Liu et al. 2014}) found that, in highly
+developed countries, the mean duration of an ALMP was not related to its
+employment effect. However, Escudero et al.
+(\citeproc{ref-escuderoetal2019}{2019}) detected the opposite for low
+and middle-income countries. This finding might suggest an interaction
+between the intensity of the intervention and other characteristics of
+the labour markets. If intensity effects are indeed null in developed
+countries, this would raise the question on the minimum treatment dose
+needed to generate a certain effect. Evidence of null intensity effects
+would justify reallocating resources toward covering more jobseekers
+rather than intensifying treatment for each participant.
+
+This article studies the employment effects of different treatments with
+diverse doses of job search services. We evaluate an active labour
+market programme called Assegno per il Lavoro and implemented in Veneto
+(Italy) that offers different treatment endowments. Each participant of
+the treatment group is linked to a voucher of job search assistance and
+to services of job search intermediation. Importantly, both the voucher
+value and the intermediation payment increase across groups. Concerning
+the duration of employment, we study the effects of different treatment
+endowments on the mean and different quantiles of the distribution of
+days worked. Regarding employment quality, we study the effects on the
+probability of signing different types of employment contracts. Thanks
+to the assignment mechanism of the programme, we carry out a sharp
+regression discontinuity analysis that allows us to estimate local
+effects at the threshold. Identification was possible for two treatment
+comparisons: intermediate (\(B\)) vs.~low endowment (\(A\)) and high
+(\(C\)) vs.~intermediate endowment (\(B\)).
+
+The results on the employment effects show that increasing the endowment
+is in general ineffective to increase the number of days worked, but it
+avoids the discrimination of hard-to-place jobseekers. In terms of
+employment duration, the impact on the average of days worked is
+eventually null at all semesters for the first treatment comparison
+(\(B\) vs.~\(A\)) and of 10 extra days during the first year for the
+second treatment comparison (\(C\) vs.~\(B\)). Looking at the median of
+the distributions, we estimate that there is a gain of employment in the
+intermediate-low contrast during the third semester and in the
+high-intermediate comparison during the second semester. The drawback is
+that all these effects vanish subsequently. In terms of employment
+quality, the intermediate-low comparison triggers a higher probability
+of getting an open-ended contract during the implementation period of
+the programme. In contrast, this is not detected for the
+high-intermediate comparison, which generates an increase in the
+probability of signing a short temporary contract as the longest
+employment episode. Concerning programme implementation, on the one
+hand, we detect a very small change in the actual duration of job search
+assistance at the threshold, consistent with prior evidence on
+implementation failures in voucher-based public services. Consequently,
+job search intermediation appears to be responsible for the few impacts
+observed. On the other hand, under the differentiated payment structure,
+we find no evidence of discrimination in access to job search services
+for the less-employable jobseekers.
+
+\textbf{Related literature}. There is a broad literature estimating the
+effect of participating in job search services on employment attainment
+both in economics (\citeproc{ref-cardetal2018}{Card et al. 2018};
+\citeproc{ref-voorenetal2019}{Vooren et al. 2019}) and psychology
+(\citeproc{ref-liuetal2014}{Liu et al. 2014}). Our work contributes to
+three research lines that deal with the employment effects of the
+following design features: the intensity of assistance, the intensity of
+intermediation, and the private provision of public employment services.
+
+Firstly, job search assistance (JSA) is aimed at improving the job
+search of the unemployed individual by intervening on her job search
+skills, motivation, or targets. The heterogeneous effects of JSA in
+function of its intensity have been rarely studied in an European
+context. Liu et al. (\citeproc{ref-liuetal2014}{2014}) performed a
+meta-analysis on the employment effects of JSA including 32 randomized
+experiments and 15 observational studies, most of them based on the USA.
+They concluded that there was not an association between the intensity
+(duration) of the intervention and the effect magnitude. Martinson et
+al. (\citeproc{ref-martinsonetal2019}{2019}) and Dyke et al.
+(\citeproc{ref-dykeetal2006}{2006}) also found a null effect of JSA
+intensity on employment with studies almost exclusively from the USA. On
+the contrary, Meyer (\citeproc{ref-meyer1995}{1995}) detected a positive
+employment effect also in the USA. More research is needed for the
+European countries, as there are substantial differences in the
+organization of public administrations and the markets for ALMPs
+providers between the USA and Europe.
+
+Secondly, job search intermediation (JSI) involves a delegation of the
+job search from the worker to a third party, whether as a full
+delegation or as a complementary service. There are only a few
+evaluations of these interventions, but they usually conclude positive
+effects on employment (\citeproc{ref-fougereetal2009}{Fougère et al.
+2009}; \citeproc{ref-engstrometal2012}{Engström et al. 2012};
+\citeproc{ref-vandenbergetal2019}{Van Den Berg et al. 2019};
+\citeproc{ref-cheungetal2025}{Cheung et al. 2025}). Three other articles
+have investigated the effect of JSI under performance-based payments.
+Zanella and Salomone (\citeproc{ref-zanellasalomone2025}{2025}) found a
+positive impact in private providers, whereas Koning and Heinrich
+(\citeproc{ref-koningheinrich2013}{2013}) concluded the same under a mix
+of ALMPs but only for non-disable jobseekers. Burgess et al.
+(\citeproc{ref-burgessetal2017}{2017}) studied public providers and only
+detected positive effects in large establishments.
+
+Thirdly, researchers have also studied the potential benefits and risks
+of a private provision of public employment services via vouchers and
+performance pays (\citeproc{ref-hippwarner2008}{Hipp and Warner 2008}).
+Regarding a provision with vouchers, in the American context, Barnow
+(\citeproc{ref-barnow2009}{2009}) reviewed evaluations of voucher
+implementations in adult training, noting mixed estimates on the
+employment effects. Doerr et al. (\citeproc{ref-doerretal2017}{2017})
+found that, on average, receiving a voucher generated large and lasting
+negative effects on employment. Like Huber et al.
+(\citeproc{ref-huberetal2018}{2018}), they found small positive effects
+emerging in the very long run. In the European context, Brenninkmeijer
+and Blonk (\citeproc{ref-brenninkblonk2012}{2012}) conducted an
+experiment on JSA in the Netherlands, evaluating an open-dose (voucher)
+against a closed-dose treatment and a no-treatment group. In the short
+term, the voucher condition yielded results similar to the control
+condition. An Italian programme evaluated by Linfante et al.
+(\citeproc{ref-linfanteetal2019}{2019}) found null effects on employment
+one year after treatment for compliers who registered after receiving an
+invitation.
+
+Concerning a provision with performance pays, one of the potential
+disadvantages of a quasi-marketization of public services is the cream
+skimming problem. Cream skimming refers to the rejection of
+hard-to-place jobseekers by service providers. The evidence on the
+existence of this problem is mixed, with some studies finding it for
+certain groups (\citeproc{ref-koningheinrich2013}{Koning and Heinrich
+2013}), other studies rejecting its existence
+(\citeproc{ref-aakviketal2005}{Aakvik et al. 2005}) and other articles
+highlighting the measurement problems of this concept
+(\citeproc{ref-heckmansmith2004}{Heckman and Smith 2004}). Establishing
+different performance pays in function of the jobseeker's employability
+has been sometimes presented as a shelter against this problem.
+
+This paper makes three contributions to the literature. First, we
+provide new evidence on the dose--response function in job search
+assistance within a European context, where programme designs and labour
+market institutions differ substantially from the US-based prior
+literature. Second, we study the heterogeneous effects of job search
+intermediation under performance-based payments, focusing for the first
+time on how the intensity of such payments shapes employment outcomes.
+Third, we assess whether differentiated performance payments succeed in
+discouraging cream skimming, contributing to the literature on the
+design of quasi-markets for public employment services. On the
+methodological side, our analysis uses a credible identification that
+combines regression discontinuity with local quantile treatment effects,
+one of the first applications of these recently proposed techniques.
+
+We continue in Section~\ref{sec-policy} describing the programme design
+evaluated. In Section~\ref{sec-meth}, we present the data and the
+methods employed to answer our research questions.
+Section~\ref{sec-results} shows the results of our work and assesses the
+plausibility of our identification assumptions. Lastly, we draw some
+conclusions in Section~\ref{sec-conc}.
+
+\section{Policy design}\label{sec-policy}
+
+Assegno per il Lavoro (hereinafter, AXL) was a programme developed in
+Veneto (Italy) from July 2017 to May 2022 and funded by the public
+employment office of the region. The general objective of AXL was to
+reduce unemployment. Initially, the target group were those over 35
+years old that met at least one of the conditions of social
+vulnerability included in Government of Veneto
+(\citeproc{ref-veneto2017a}{2017a}). From April 2018, the programme
+extended to all unemployed individuals over 30 years old.
+
+To achieve this objective, policymakers designed an intervention with
+diverse tools or components. The individual could receive job search
+assistance, adult training, job search intermediation, and internships.
+The intensity of such intervention could vary according to the treatment
+group. Table~\ref{tbl-endowdur} shows the amount of money available for
+each participant related to each component by treatment group. There are
+three main sources of variation between groups. Regarding job search
+assistance, group \(B\) almost doubles the number of maximum hours
+available compared to group \(A\). We can see a remarkable difference on
+this matter between group \(C\) and group \(B\) as well. Concerning job
+search intermediation and internships, the money devoted to such
+components also changes by treatment group. Lastly, the maximum duration
+of the intervention also increases from \(A\) to \(C\), although the
+differences are not substantial.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2703}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2432}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2432}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2432}}@{}}
+\caption{Endowments and duration of AXL by treatment group
+(\citeproc{ref-veneto2017a}{Government of Veneto 2017a};
+\citeproc{ref-veneto2018}{Government of Veneto
+2018})}\label{tbl-endowdur}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group A
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group B
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group C
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group A
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group B
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Group C
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Total endowment & 3,536 € & 4,264 € & 5,796 € \\
+- Job search assistance & 266 € (7 hours) & 494 € (13 hours) & 1,026 €
+(27 hours) \\
+- Adult training & 1,770 € & 1,770 € & 1,770 € \\
+- Job search intermediation* & 1,500 € & 2,000 € & 3,000 € (for JSI and
+internships) \\
+- Internships* & 0 € & 0 € & \\
+Maximum duration & 3 months (6 with interruption) & 5 months (8 with
+interruption) & 6 months (9 with interruption) \\
+\end{longtable}
+
+The implementation process is carried out through vouchers and
+performance-based pays. The individual decides first where to spend it.
+There is a quasi-market of private providers that offer all these
+services. The public employment office lists all of them and the
+individual chooses where to go. On the voucher side, participant and
+provider decide then how much to spend on job search assistance and on
+adult training. The hourly price of the first component is fixed, but it
+is not for the second one. On the prize side, job search intermediation
+and internships are not paid depending on the service provision. It is
+strictly a performance-based payment: the provider only gets the money
+if the participant signs an employment contract. Moreover, the
+performance-based pay increases in function of the duration of the
+contract\footnote{Table~\ref{tbl-endowdur} shows the performance-based
+  pay for JSI in case of an open-ended contract. If a fixed-term
+  contract of more than 12 months is signed, this quantity is multiplied
+  by 0.8. If the duration is between 6 and 12 months, the factor is 0.6.}.
+
+Table~\ref{tbl-endowdur} shows that the endowment of the programme
+depends on the treatment group in which the participant is allocated. In
+AXL, the individual is assigned to a certain treatment group according
+to a scoring variable that estimates the probability of being employed
+in 24 months. The score has the following functional form
+(\citeproc{ref-veneto2017b}{Government of Veneto 2017b}):
+
+\[
+\begin{aligned}
+\hat{S} i &= 1/[1 + \exp(-(\hat{\beta}_0 + \hat{\beta}_1 sex_i + \hat{\beta}_2 age_i + \hat{\beta}_3 foreign_i + \hat{\beta}_4 studies_i + \hat{\beta}_5 disab_i \\
+&\quad + \hat{\beta}_6 termination_i + \hat{\beta}_7 occup_i + \hat{\beta}_8 sector_i))]
+\end{aligned}
+\]
+
+\(\hat{S}_i\) incorporates both sociodemographic covariates (sex, age,
+being foreign, level of studies, and having a disability) and covariates
+on the last employment (reason of termination, major group of
+occupation, and sector). To make the scoring variable following the same
+direction of treatment endowment, we reversed the original scoring
+variable generating \(S_i\). Once the participant receives a score, it
+is allocated to a certain treatment group according to the next
+function:
+
+\[
+group_i =
+\begin{cases}
+A & 0 \le s \le 0.4 \\
+B & 0.41 \le s \le 0.6 \\
+C & 0.61 \le s \le 1
+\end{cases}
+\]
+
+\section{Methods}\label{sec-meth}
+
+\subsection{Data}\label{data}
+
+The data comes from administrative records of Veneto Lavoro, the public
+employment service of the region of Veneto (Italy). We use microdata on
+all individuals that applied to AXL during the whole implementation
+period of the programme.
+
+We have information on three outcome variables measured at different
+periods. Firstly, related to the employment duration, we know the number
+of days worked during the first, the second, the third, and the fourth
+semester since the treatment started. Secondly, regarding employment
+quality, we have a polytomous outcome variable that registers what was
+the longest employment contract signed since the treatment began. Notice
+that the type of contract is considered one of the two dimensions of
+employment quality by Muñoz De Bustillo et al.
+(\citeproc{ref-munozdebustilloetal2011}{2011}). We distinguished five
+categories: open-ended contract (OEC), temporary contract of long
+duration (i.e.~more than 12 months), temporary contract of intermediate
+duration (i.e.~from 6 to 12 months), temporary contract of short
+duration (5 or less months), and no employment. We also have information
+about the type of contract linked to the performance-base pay of
+intermediation. In some cases, such contract may be the same as the
+longest employment contract, but not necessarily. Thirdly, related to
+treatment uptake, we know the doses of treatment actually received by
+participants. We have the number of hours of job search assistance and
+the number of hours of adult training. This last set of outcomes will
+help us disentangle some possible mechanisms to explain the results.
+
+The remaining covariates in our dataset are the scoring variable and
+other sociodemographic variables. The scoring or running variable is the
+unique confounder according to the programme design, so we do not need
+additional control variables for identification. The remaining
+sociodemographic covariates will be employed for the plausibility and
+heterogeneity analyses. In the supplementary document, we include the
+full list of variables with their definitions.
+
+\subsection{Analysis}\label{analysis}
+
+\subsubsection{Target parameters}\label{target-parameters}
+
+We consider different outcomes, so we denote as \(Y_{oi}\) the response
+variable for outcome \(o\) and individual \(i\). For a simpler
+exposition, we remove the subindex \(o\) without loss of generality.
+During the presentation of results, we also eliminate subindex \(i\) to
+facilitate the reading. We denote the potential outcome for the state of
+the world with the active treatment as \(Y_i(1)\) and the potential
+outcome for the state of the world without that active treatment as
+\(Y_i(0)\).
+
+We are interested in two treatment comparisons. \(D_{1i}\) is a binary
+variable that collects if individual was treated under group \(B\) (with
+value 1) or under group \(A\) (with value 0). \(D_{2i}\) is another
+binary variable that informs if individual was treated under group \(C\)
+(with value 1) or under group \(B\) (with value 0). For each case,
+treatment with value 1 is referred as the active treatment, whereas
+treatment with value 0 is called the control treatment. As we mentioned
+before, treatment group is determined by the scoring variable \(S_i\).
+For each treatment comparison, we partition the sample by delimiting the
+range of the score and centring it at the cutoff, so both \(S_{1i}\)
+(affecting \(D_{1i}\)) and \(S_{2i}\) (affecting \(D_{2i}\)) present the
+cutoff at \(c=0\). Therefore, we may denote more generally \(D_{zi}\)
+and \(S_{zi}\) for \(z \in \{1,2\}\), but in the following we omit
+subindex \(z\) to reduce the notational burden.
+
+Our target parameters are the local average treatment effect of \(D_i\)
+on \(Y_i\) (\(LATE\)), the local average treatment effect of \(D_i\) on
+the probability of \(Y_i=j\) (\(LATE_j\)), and the local quantile
+treatment effect for a certain quantile \(\mathbb{Q}_\tau\) at
+percentile \(\tau\) of \(D_i\) on \(Y_i\) (\(LQTE(\tau)\)). In all
+cases, by local we mean the subpopulation with a score just at the
+threshold, which determines receiving the higher endowment in each
+comparison. Equivalently, these target parameters can be understood as
+local effects of a certain endowment or as intention-to-treat effects of
+a certain treatment. Formally, we can write the estimands as
+
+\[
+LATE = \mathbb{E}[Y_i(1)|S_{zi}=c] - \mathbb{E}[Y_i(0)|S_{zi}=c] \text{ for } z \in \{1, 2\}
+\] \[
+LATE_j = \mathbb{P}[Y_i(1)=j|S_{zi}=c] - \mathbb{P}[Y_i(0)=j|S_{zi}=c] \text{ for } z \in \{1, 2\}
+\] \[
+LQTE(\tau) = \mathbb{Q}_{\tau}[Y_i(1)|S_{zi}=c] - \mathbb{Q}_{\tau}[Y_i(0)|S_{zi}=c] \text{ for } z \in \{1, 2\}
+\]
+
+\subsubsection{Identification}\label{identification}
+
+Since the target parameters contain unobservable potential outcomes, we
+require identification assumptions to estimate them using observable
+potential outcomes. Following Rubin (\citeproc{ref-rubin2007}{2007}), an
+identification strategy is more credible when it is closer to the
+properties of a randomized experiment. Therefore, we propose to leverage
+the design of AXL to use a sharp regression discontinuity strategy. This
+method is based on two identification assumptions related to two
+properties of randomized experiments.
+
+\begin{tcolorbox}[enhanced jigsaw, breakable, leftrule=.75mm, arc=.35mm, left=2mm, colback=white, rightrule=.15mm, colframe=quarto-callout-tip-color-frame, toprule=.15mm, bottomrule=.15mm, opacityback=0]
+
+\vspace{-3mm}\textbf{Assumption 1}\vspace{3mm}
+
+The assignment mechanism is \(D_i = \mathbf{1}(S_i \ge c)\), so
+\(\lim_{s \downarrow c} \mathbb{E}[D_i|S_i=s] - \lim_{s \uparrow c} \mathbb{E}[D_i|S_i=s] \ne 0\).
+
+\end{tcolorbox}
+
+The first identification assumption is the unconfoundedness of the
+assignment mechanism, which departs from the knowledge on how the
+treatments were assigned (\citeproc{ref-abadiecattaneo2018}{Abadie and
+Cattaneo 2018}; \citeproc{ref-frolichsperlich2019}{Frölich and Sperlich
+2019}). The main idea is that adjusting for the scoring variable, the
+assignment variable is not related to any potential outcome. In our
+case, it is a weak assumption thanks to the detailed knowledge on the
+treatment assignment function. Both the awareness of the assignment
+function and the unconfoundedness of the assignment mechanism are
+properties of randomized experiments.
+
+If treatment assignment was not only influenced by the score, but also
+by other unadjusted variables like ability, Assumption 1 would be false.
+This problem is known as score manipulation
+(\citeproc{ref-frolichsperlich2019}{Frölich and Sperlich 2019}), so we
+will examine how feasible is to manipulate the specific variables that
+determine the score used in AXL.
+
+\begin{tcolorbox}[enhanced jigsaw, breakable, leftrule=.75mm, arc=.35mm, left=2mm, colback=white, rightrule=.15mm, colframe=quarto-callout-tip-color-frame, toprule=.15mm, bottomrule=.15mm, opacityback=0]
+
+\vspace{-3mm}\textbf{Assumption 2}\vspace{3mm}
+
+\begin{itemize}
+\tightlist
+\item
+  For \(LATE\): \(\mathbb{E}[Y_i(1)|S_i]\) is continuous at \(S_i = c\)
+  and \(\mathbb{E}[Y_i(0)|S_i]\) is continuous at \(S_i = c\).
+\item
+  For \(LATE_j\): \(\mathbb{P}[Y_i(1)=j|S_i]\) is continuous at
+  \(S_i = c\) and \(\mathbb{P}[Y_i(0)=j|S_i]\) is continuous at
+  \(S_i = c\).
+\item
+  For \(LQTE(\tau)\): \(F_{Y(1)|S}(y|c)\) is continuous and
+  \(F_{Y(0)|S}(y|c)\) is continuous.
+\end{itemize}
+
+\end{tcolorbox}
+
+The second identification assumption solves the absence of overlap
+through the continuity of potential outcome functions
+(\citeproc{ref-frolichsperlich2019}{Frölich and Sperlich 2019}). While
+the designs of randomized experiments present probabilistic assignment
+mechanisms, the designs linked to the sharp regression discontinuity are
+based on a deterministic assignment mechanism. There are two approaches
+to bypass this problem in the regression discontinuity context
+(\citeproc{ref-cattaneoetal2019}{Cattaneo et al. 2019}). The local
+randomization approach is suitable when we have a natural experiment as
+defined by Titiunik (\citeproc{ref-titiunik2021}{2021}). It is not our
+case, because our assignment mechanism does not incorporate any element
+of chance. The continuity approach to regression discontinuity solves
+the lack of overlap by performing a small extrapolation. The rationale
+is that extrapolations distant from the observed data are more
+model-dependent (\citeproc{ref-kingzen2006}{King and Zeng 2006}), so
+this strategy focuses on a more modest estimand around the cutoff.
+
+There are two situations that might provoke violations of Assumption 2.
+On the one hand, if another programme employed the same scoring variable
+to allocate treatments and its effect was not null. Thereby,
+\(\mathbb{E}[Y_i(0)|S_i]\) or its homologous would suffer a
+discontinuity at the cutoff, because this would be the point at which
+the alternative treatment is activated. Two checks will be performed to
+assess the plausibility of this situation. First, we will use
+pseudo-treatment or placebo outcome tests just at the cutoff
+(\citeproc{ref-frolichsperlich2019}{Frölich and Sperlich 2019};
+\citeproc{ref-eggersetal2024}{Eggers et al. 2024}). Following Manski and
+Pepper (\citeproc{ref-manskipepper2018}{2018}), a statistically
+significant difference between groups would diminish the credibility of
+the continuity assumption. Second, we will examine the documents of the
+AXL design to judge the possibility of other programmes employing the
+same running variable. On the other hand, if treatment groups in our
+sample had different conditional expected values in covariates included
+in the confounding variable, the credibility of the continuity
+assumption would also be lower. Therefore, we will study the balance of
+these covariates among the different treatment groups.
+
+\subsubsection{Estimation and inference}\label{estimation-and-inference}
+
+We are going to estimate the target parameters using graphical and
+quantitative methods. As a first step, we use regression discontinuity
+plots both with local mean/proportions and with local medians
+(\citeproc{ref-cattaneoetal2024}{Cattaneo et al. 2024}). As a second
+step, we analyse the data with more fine-grained estimation and
+inference techniques.
+
+Regarding point estimation, we have used three estimators, one for each
+estimand. For quantitative outcomes, we can credibly estimate both the
+\(LATE\) and the \(LQTE(\tau)\). In order to estimate the \(LATE\), we
+have used the local polynomial estimator Cattaneo and Titiunik
+(\citeproc{ref-cattaneotitiunik2022}{2022}). A common bandwidth for both
+sides has been chosen by minimizing the mean squared error following
+standard procedures (\citeproc{ref-calonicoetal2017}{Calonico et al.
+2017}). For each \(LATE\), two specifications have been estimated, one
+quadratic and other linear in the score, both with the triangular
+kernel\footnote{We chose the triangular kernel because of its point
+  estimation optimality property, its consistency in spirit with the
+  available kernels of Qu and Yoon (\citeproc{ref-quyoon2019}{2019}) and
+  its compatibility with the procedure of Pei et al.
+  (\citeproc{ref-peietal2022}{2022}). The results are essentially the
+  same with a uniform kernel for almost all semesters.}. The definitive
+specification has been selected according to the asymptotic mean squared
+error as recommended by Pei et al. (\citeproc{ref-peietal2022}{2022}).
+
+To estimate the \(LQTE(\tau)\), we have applied the local estimator
+proposed by Qu and Yoon (\citeproc{ref-quyoon2019}{2019}). The procedure
+to choose the bandwidth is adapted to the quantile setting but preserves
+the same intuition: the minimization of the mean squared error. We have
+estimated the optimal bandwidths according to three procedures proposed
+by Qu and Yoon (\citeproc{ref-quyoon2015}{2015}) and Qu and Yoon
+(\citeproc{ref-quyoon2019}{2019}): treating the cutoff as an interior
+point, as a boundary point, and with the quantile adaptation of the
+bandwidth selector by Imbens and Kalyanaraman
+(\citeproc{ref-imbenskaly2012}{2012}). Then, to avoid bias, we have
+selected the lowest bandwidth among the three alternatives. As
+recommended by the authors of the method, all specifications consider a
+linear specification of the regression coefficients of \(S_i\) and
+employ the Epanechnikov kernel. For quantile regressions, we do not
+maintain the rank invariance assumption, so interpretation of results
+must be made in accordance with that. Under rank dissimilarity,
+estimates of \(LQTE(\tau)\) are not informative about on which
+individual the treatment is most effective
+(\citeproc{ref-dongshen2018}{Dong and Shen 2018}). Nonetheless, they
+inform about changes at the potential outcome distributions, which helps
+to assess the usefulness of the programme as a whole.
+
+For qualitative outcomes, we can only estimate the \(LATE_j\). We have
+employed the local logit model with maximum likelihood estimator
+developed by Xu (\citeproc{ref-xu2017}{2017}). The bandwidth has also
+been chosen by minimizing the mean squared error, with a procedure
+adapted to the categorical setting by Xu (\citeproc{ref-xu2017}{2017}).
+His method also departs from a linear specification of the coefficients
+of \(S_i\) and uses a uniform kernel.
+
+Concerning inference, methodologists have considered that non-parametric
+estimators minimize bias \emph{and} variance when optimizing the mean
+squared error, so some bias remains. Following Cattaneo et al.
+(\citeproc{ref-cattaneoetal2019}{2019}), we use a bandwidth that is
+optimal for point estimation but removing the remaining bias for
+inference aims. For the mean estimand, we executed a Wald test of no
+effect employing the robust bias-corrected approach of Calonico et al.
+(\citeproc{ref-calonicoetal2014}{2014}). For the probability estimand,
+Xu (\citeproc{ref-xu2017}{2017}) adapts the approach of Calonico et al.
+(\citeproc{ref-calonicoetal2014}{2014}) to the categorical setting also
+with a Wald test. For the quantile estimand, the first inference
+procedure contrasts treatment non-significance and is a Wald test of
+\(H_0:LQTE(\tau)=0\) for all \(\tau \in \mathcal{T}\), with
+\(\mathcal{T}\) denoting the quantile range, and
+\(H_1:LQTE(\tau) \ne 0\) for some \(\tau \in \mathcal{T}\). The second
+inference procedure contrasts the homogeneity of treatment effects
+across quantiles and is a Wald test of \(H_0:LQTE(\tau)\) is constant
+over \(\tau \in \mathcal{T}\), with \(H_1:LQTE(\tau) \ne LQTE(v)\) for
+some \(\tau,v \in \mathcal{T}\). These tests developed by Qu and Yoon
+(\citeproc{ref-quyoon2019}{2019}) are also robust-bias-corrected in the
+sense of Calonico et al. (\citeproc{ref-calonicoetal2014}{2014}).
+
+To assess the robustness of the results, we will repeat the analyses
+with variations in modelling options such as the polynomial degree,
+slight changes of the optimal common bandwidth and different optimal
+bandwidths at each side of the cutoff. Additionally, we will also run
+subgroup analyses to look for heterogeneous effects. This strategy
+repeats the analyses in strata of the population formed by covariates
+that might be an effect modifier of the treatment.
+
+\section{Results}\label{sec-results}
+
+\subsection{Effects on assistance take-up}\label{sec-rassistance}
+
+The design of AXL allows us to identify the effect of different
+treatment endowments on actual treatment uptake. It seems reasonable to
+assume that policymakers give more money to the less-employable people
+to encourage them to take a more intense treatment. We can measure the
+intensity of such treatment through the number of hours actually spent
+in job search assistance (\(Y_{HS}\)).
+
+Figure~\ref{fig-intensity} displays visual evidence on the local means
+of hours of treatment uptake for each endowment in function of the score
+of the participant. Concerning the first treatment (\(D_1\)), we
+appreciate a jump at the cutoff for the actual hours of job search
+assistance. Regarding the second treatment (\(D_2\)), the number of
+hours of job search assistance also presents a small change of level at
+the cutoff, although much smaller than the potential difference allowed
+by the endowment.
+
+\begin{figure}
+
+\caption{\label{fig-intensity}RD plots for the effect on assistance
+take-up. LSM: Local Sample Mean.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_yhs.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_yhs.pdf}}\end{minipage}%
+
+\end{figure}%
+
+To complement the plots with quantitative estimates of the effects,
+Table~\ref{tbl-assistance} offers formal estimates for each treatment.
+All results are consistent with the graphical evidence. Firstly, we find
+a mean difference of only an extra hour of job search assistance in the
+active treatment both for \(D_1\) and \(D_2\). This difference is
+statistically significant at the 1 \% level in both cases. The magnitude
+is remarkably low once we consider that the potential difference between
+both groups is 6 hours (in \(D_1\)) and 14 hours (in \(D_2\)). As we
+show in the supplementary document, the different amount of the vouchers
+for job search assistance does not have a statistically significant
+effect on the number of training hours either. This is less surprising
+due to the equal amount of money reserved for training in every group.
+Therefore, considering the small differences of participation in
+assistance between control and active treatments, the results below may
+be interpreted as the unique effect of different performance pays for
+job search intermediation.
+
+\begin{table}
+
+\caption{\label{tbl-assistance}Estimates of effects for each treatment
+assignment at the mean of hours of assistance take-up.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and its standard error in parenthesis. $n_h$ is the effective sample size. The polynomial degree is always one.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+width={0.5\linewidth},
+colspec={X[]X[]},
+hline{2}={1-2}{solid, black, 0.05em},
+hline{1}={1-2}{solid, black, 0.08em},
+hline{8}={1-2}{solid, black, 0.08em},
+column{2}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_{HS}$ \\
+$D_1$ & {1.255***\\(0.210)} \\
+Bandwidth $(h)$ & {0.046} \\
+$n_h$ & {4774} \\
+$D_2$ & {1.098***\\(0.255)} \\
+Bandwidth $(h)$ & {0.074} \\
+$n_h$ & {8013} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\subsection{Effects on employment}\label{sec-remploy}
+
+Figure~\ref{fig-emplmean} presents regression discontinuity plots with
+local means of the number of days worked at the first and second
+semester for the first (score \(S_1\)) and the second treatment (score
+\(S_2\)). Plots for the remaining semesters are available in the
+supplementary document. We see that there is no jump at the cutoff in
+any case, which suggests a null effect of both the first increase
+(\(D_1\)) and the second increase in the treatment dose (\(D_2\)).
+Although the visual evidence offers a negative evaluation of the
+interventions, more formal methods are required to quantify such
+differences.
+
+\begin{figure}
+
+\caption{\label{fig-emplmean}RD plots with local means for employment
+duration variables. LSM: local sample mean.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_y1.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d1_y2.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_y1.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/late_d2_y2.pdf}}\end{minipage}%
+
+\end{figure}%
+
+Table~\ref{tbl-emplmean} offers formal estimates of the \(LATE\) for
+both treatments, with results that are consistent with those presented
+in previous plots. The first panel shows the mean effect of \(D_1\) at
+the cutoff across the four semesters. We do not have evidence of any
+statistically significant average effect at any of the semesters
+analysed. Setting aside statistical inference, the point estimates are
+uniformly small, ranging from an average decrease of one to an average
+increase of eight days worked. The second panel presents the mean effect
+of \(D_2\) at the cutoff for the same periods. Considering that the
+difference between active and control treatments is larger in this case,
+the impact would be larger under a linear dose--response function. Our
+findings indicate that the effect is only statistically significant at
+the second semester (for \(\alpha=0.05\)), with a moderate effect
+magnitude of ten days worked. During the rest of the semesters, the
+effects are not statistically significant at the conventional
+significance level. Therefore, at least for those at the threshold, our
+analyses suggest that the effect of both increases in the treatment dose
+is virtually null for most semesters\footnote{The results are robust to
+  using ``being employed at quarter \(t\)'' as alternative outcome. The
+  estimates on the increases in the employment probability are still
+  tiny (overall lower than 2 p.p. in absolute terms) and not
+  statistically significant in all quarters.}.
+
+\begin{table}
+
+\caption{\label{tbl-emplmean}Estimates of employment duration effects
+for each treatment at the mean, semesters 1 to 4.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and its standard error in parenthesis. $n_h$ is the effective sample size. The polynomial degree is always one.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{8}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_1$ & $Y_2$ & $Y_3$ & $Y_4$ \\
+$D_1$ & {-1.890\\(3.698)} & {4.739\\(4.183)} & {7.961\\(5.115)} & {4.428\\(4.743)} \\
+Bandwidth $(h)$ & {0.064} & {0.061} & {0.045} & {0.053} \\
+$n_h$ & {6634} & {6375} & {4716} & {5495} \\
+$D_2$ & {6.980*\\(4.383)} & {10.141**\\(4.867)} & {4.229\\(4.752)} & {7.178\\(5.256)} \\
+Bandwidth $(h)$ & {0.037} & {0.044} & {0.049} & {0.044} \\
+$n_h$ & {4077} & {4885} & {5309} & {4823} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+Even if the treatments caused a null effect at the mean of our outcome
+variables, it is possible that they shifted the location of certain
+quantiles. Figure~\ref{fig-emplmedian} explores the local medians of
+both treatments before and after the threshold for semesters 1 and 2.
+Figures for the rest of semesters and for the effects at other quantiles
+are available in the supplementary document. For the first active
+treatment (\(D_1\)), we barely appreciate a discontinuity at the cutoff
+for the number of days worked at semester one or two. For the second
+active treatment (\(D_2\)), the situation is quite similar if we focus
+on the first semester. The figure for the second semester presents a
+more pronounced jump at the median of days worked just at the threshold.
+This might be suggesting a positive effect of this treatment on the
+employment duration.
+
+\begin{figure}
+
+\caption{\label{fig-emplmedian}RD plots with local medians for
+employment duration variables. LSMed: local sample median.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d1_y1.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d1_y2.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d2_y1.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/lqte_d2_y2.pdf}}\end{minipage}%
+
+\end{figure}%
+
+Table~\ref{tbl-emplquant} shows estimates of the \(LQTE(\tau)\) on the
+employment duration of each semester, that is, the effect on the
+different quartiles of the distribution of days worked. As expected, the
+results are consistent with the visual evidence presented just before
+for the median. Regarding the first treatment (\(D_1\)), the first main
+result is the point estimate of zero effect on the first quartile for
+all semesters. Secondly, we find an increase of approximately 20 days of
+employment for the median of the third semester of our sample. Beyond
+the point estimate, in the supplementary document, we show that the
+confidence intervals for all parameters of all quartiles include the
+zero. Thereby, we cannot reject that this effect on the median is simply
+due to chance. Still, we can reject the hypothesis of no effect at any
+quartile in the case of this third semester\footnote{This positive
+  effect at the median contrasts with a smaller and not statistically
+  significant effect at the mean of the same quarter. The point
+  estimates for the first and third quartile derived from a
+  bias-corrected estimator are slightly negative, but not statistically
+  significant. The same occurs for more extreme quantiles.
+  Unfortunately, this less-biased estimation involves more imprecision.
+  We argue that the negative impacts we found would explain the
+  median-mean difference. These additional robustness checks overall
+  support the main results presented in this article and are available
+  upon request.}. The point estimate decreases in the next semester and
+we cannot reject the treatment non-significance hypothesis at this
+period. In conclusion, all this evidence makes us argue that there was
+not a persistent effect of \(D_1\) on the distribution of days worked.
+
+\begin{table}
+
+\caption{\label{tbl-emplquant}Estimates of employment duration effects
+for each treatment at quantiles, semesters 1 to 4.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. For the first three rows of each panel, each cell reports the point estimate of the $LQTE(\tau)$. Hypotheses tests are only carried out for those $\tau$’s for which the estimate of $LQTE(\tau) \ne 0$.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{14}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+cell{1,3-7,9-13}{1}={}{halign=l},
+cell{2,8}{1}={c=5}{halign=l},
+}                     %% tabularray inner close
+& $Y_1$ & $Y_2$ & $Y_3$ & $Y_4$ \\
+$D_1$ & $D_1$ & $D_1$ & $D_1$ & $D_1$ \\
+$\tau = 0.25$ & 0 & 0 & 0 & 0 \\
+$\tau = 0.5$ & -5.072 & 10.555 & 21.91 & 12.322 \\
+$\tau = 0.75$ & 3.863 & 1.015 & 1.014 & 1 \\
+Treatment non-significance test &  &  & ** &  \\
+Treatment homogeneity test &  &  &  &  \\
+$D_2$ & $D_2$ & $D_2$ & $D_2$ & $D_2$ \\
+$\tau = 0.25$ & 0 & 0 & 0 & 0 \\
+$\tau = 0.5$ & 12.825 & 58.384 & -7.183 & -1.388 \\
+$\tau = 0.75$ & -1.75 & 6.001 & 0 & 0 \\
+Treatment non-significance test &  & * &  & * \\
+Treatment homogeneity test &  &  &  &  \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+Concerning the second treatment (\(D_2\)), we find increases of
+approximately two months of employment at the median of the distribution
+for the second semester. This point estimate is of remarkable size
+considering that the range of the outcome is {[}0, 184{]} days.
+Unfortunately, the estimation is not very precise and, as shown in the
+supplementary document, its confidence interval includes the zero.
+Therefore, we cannot reject that the observed difference of quantiles is
+due to the sampling. The median effects contrast with point estimates
+around zero both for the first and the third quartiles of the
+distribution in almost every semester. Considering the statistical
+significance of our results, we cannot reject the hypothesis of no
+effect in any quartile for the number of days worked if we establish the
+conventional significance level (at \(\alpha=0.05\)). Thereby, in our
+sample, the most relevant distributional impact of treatment \(D_2\) is
+a 58 days effect at the median during the second semester. Nevertheless,
+this heterogeneous effect fades out along time.
+
+Since assigning more money to participants does not overall generate a
+positive \(LATE\) on the employment duration, maybe it does on the
+quality of the employments. Unfortunately, we can only estimate the
+impact on the whole interval of two years after treatment started.
+Figure~\ref{fig-emplprop} offers visual evidence on this issue regarding
+two types of employment contracts as possible outcomes of the
+treatments: an open-ended contract (OEC) and a fixed-term contract
+longer than 12 months (FTCm12). Plots for contracts of shorter duration
+are available in the supplementary document. The main message from the
+plots is that there is no clear jump at the cutoff, so there seems to be
+no effect on employment quality. We can appreciate small discontinuities
+for the OEC outcome for both treatments, but this conclusion would
+require a more fine-grained analysis with numeric estimates.
+
+\begin{figure}
+
+\caption{\label{fig-emplprop}RD plots with local proportions for
+employment quality variables.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d1_yoec.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d1_yftcm12.pdf}}\end{minipage}%
+\newline
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d2_yoec.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/latej_d2_yftcm12.pdf}}\end{minipage}%
+
+\end{figure}%
+
+Table~\ref{tbl-emplquality} presents the formal estimation of the impact
+of AXL on the probability of signing each type of contract as the
+longest employment contract signed in two years. The columns collect
+both the contracts allowed (open-ended or OEC, long temporary or FTCm12
+and intermediate temporary or FTC612) and not allowed (short temporary
+or FTC05) to receive the payment. The point estimates are overall not
+statistically significant at the conventional level (\(\alpha=0.05\)) in
+both treatment comparisons. In the comparison of the high
+vs.~intermediate endowments (\(D_2\)), we do find an effect of 4.5 p.p.
+on the probability of having a short temporary contract during the
+longest employment. At the same time, there is a decrease in the
+probability of having an open-ended contract of 3.1 p.p. in this
+treatment contrast. This might explain the increases at the median of
+the distribution that appeared for \(D_2\), because they were of low
+magnitude and only at the second semester. Such increase in short
+temporary contracts is interesting, because this is not a type of
+contract that guarantees the performance-based pay. One possible
+interpretation is that caseworkers thought that this short contract
+could facilitate getting a longer one that would get them access to the
+placement prize.
+
+\begin{table}
+
+\caption{\label{tbl-emplquality}Estimates of employment quality effects
+for each treatment and contract of the longest employment spell.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and 95 \% confidence interval in brackets.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{4}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_{OEC}$ & $Y_{FTCm12}$ & $Y_{FTC612}$ & $Y_{FTC05}$ \\
+$D_1$ & {0.019*\\(-0.001, 0.061)} & {0\\(-0.01, 0.006)} & {0.018\\(-0.009, 0.046)} & {-0.02\\(-0.062, 0.01)} \\
+$D_2$ & {-0.031**\\(-0.062, -0.004)} & {0.002\\(-0.004, 0.008)} & {-0.006\\(-0.038, 0.015)} & {0.045***\\(0.018, 0.092)} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+To examine the process of job search intermediation, we may compare the
+results about the effects of the participation in each group on two
+slightly different outcomes: the longest contract
+(Table~\ref{tbl-emplquality}) and the awarded contract (tbl-emplawards).
+While the former variable captures the most stable contract signed
+within two years from the start of the treatment, the latter variable
+refers to the contract linked to a placement prize (if any).
+
+First, being in the intermediate-dose group (\(D_1\)) increases the
+probability of getting any of the awarded contracts. It seems that, in
+this case, a larger incentive for the provider triggers a larger effort
+to support the job search. Thereby, the treatment appears to have
+accelerated access to an employment to a (small) fraction of the
+participants. Interestingly, the point estimates among the three types
+of contracts are close and do not follow a linear function. If we remind
+the effects on the longest employment contract in two years presented in
+Table~\ref{tbl-emplquality}, we see that the active treatment has null
+effects on the probability of each type of contract. Thus, along time,
+either (a) the control group closes the gap with the active treatment
+group within two years or (b) the active treatment group is unable to
+retain the employment. In the latter case, policymakers could
+incorporate a job maintenance intervention involving meetings during the
+period of employment.
+
+Second, we see that being in the high-dose group (\(D_2\)) has no effect
+on the awarded contract, but it does on the probability of having a
+short-term temporary job as the longest employment contract. On one
+side, we could interpret that people in this group required a longer
+timeline to adapt themselves to the labour market because they enter
+better occupations after treatment. This idea does not find support in
+our data, because the probability of getting a job with the occupation o
+during the longest employment contract barely changes among
+groups\footnote{Results are available upon request}. On the other side,
+we could interpret that caseworkers push treated jobseekers to accept
+less stable contracts with the hope of getting access to more stable
+contracts in the future. This would explain the null effects shown in
+Table~\ref{tbl-emplawards} on the probability of signing any of the
+awarded contracts. However, as we can see in
+Table~\ref{tbl-emplquality}, participants in the high-dose group do not
+achieve a greater probability of signing a longer temporary contract and
+decrease their probability of getting a permanent contract.
+
+\begin{table}
+
+\caption{\label{tbl-emplawards}Estimates of employment quality effects
+for each treatment and contract of the awarded employment spell.}
+
+\centering{
+
+\centering
+\begin{talltblr}[         %% tabularray outer open
+entry=none,label=none,
+note{}={Note: * $p$ < 0.1, ** $p$ < 0.05, *** $p$ < 0.01. Each cell shows the point estimate of the $LATE$ and 95 \% confidence interval in brackets.},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]},
+hline{2}={1-4}{solid, black, 0.05em},
+hline{1}={1-4}{solid, black, 0.08em},
+hline{4}={1-4}{solid, black, 0.08em},
+column{2-4}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& $Y_{pOEC}$ & $Y_{pFTCm12}$ & $Y_{pFTC612}$ \\
+$D_1$ & {0.022***\\(0.008, 0.05)} & {0.01***\\(0.005, 0.021)} & {0.048***\\(0.019, 0.073)} \\
+$D_2$ & {0.008\\(-0.019, 0.024)} & {0.001\\(-0.011, 0.009)} & {0.019\\(-0.007, 0.055)} \\
+\end{talltblr}
+
+}
+
+\end{table}%
+
+\subsection{Cream-skimming}\label{sec-rcream}
+
+One of the common rationales to establish different performance pays for
+each profile of workers is to discourage cream skimming of users,
+i.e.~the selection of easy-to-place workers
+(\citeproc{ref-carterwhitworth2015}{Carter and Whitworth 2015}).
+Policymakers anticipate that possibility and may include this design
+feature to prevent it, but there is no guarantee that the incentives are
+high enough to avoid this behaviour. In this section, we evaluate
+whether such discrimination exists under the current programme design.
+Considering that each provider might have different internal policies
+about the prioritization of users and that users self-select in a
+specific provider, we stratify the sample by provider for the subsequent
+analyses.
+
+Figure~\ref{fig-creaming} shows that there is almost no evidence of
+cream skimming, since we cannot reject that being in a less-employable
+treatment group changes the participation probability at the
+cutoff\footnote{To avoid small sample sizes, we only considered the set
+  of providers that accounted for 75\% of the sample (having previously
+  sorted the providers from more to less users of AXL).}. Departing from
+a theoretical model in which the untreated and the treated potential
+outcomes are monotonically related
+(\citeproc{ref-heckmanetal2002}{Heckman et al. 2002}), providers could
+interpret \(S\) (or \(D\)) as a proxy of the untreated potential outcome
+and select individuals based on that score. If cream skimming occurred,
+we would appreciate a jump in the regression discontinuity plots or,
+equivalently, a non-null \(LATE\) on the participation probability when
+the endowment (the profile assigned with the score) is higher.
+
+\begin{figure}
+
+\caption{\label{fig-creaming}Estimates of the \(LATE_j\) on the
+probability of participating in each provider. Each dot represents the
+point estimate and the bars show the 95 \% confidence interval.}
+
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/creaming_d1.pdf}}\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+\pandocbounded{\includegraphics[keepaspectratio]{../intermediate/script04/plots/creaming_d2.pdf}}\end{minipage}%
+
+\end{figure}%
+
+For both treatments, in general, we do not detect a statistically
+significant effect of being assigned to a group with larger endowment on
+the probability of participating with each provider. Interestingly, two
+of the three coefficients that are statistically significant are
+positive, which indicates that a greater endowment fostered the
+participation in certain providers. This indicates an ``inverse cream
+skimming'' in which providers select hard-to-place workers, something
+that could interest some governments in terms of fairness. The unique
+exception is provider 5 in \(D_2\), for which we estimate that a larger
+treatment endowment decreases the probability of participating in that
+provider at the threshold. In any case, this evidence of cream skimming
+appears incidental rather than systematic, because that provider only
+represents around 1 \% of the sample. Therefore, on a positive note, the
+programme appears to have effectively deterred discrimination in the
+access to job search services.
+
+\subsection{Plausibility and robustness checks}\label{sec-plaurob}
+
+We have performed two plausibility checks to analyse placebo outcomes
+and covariate balance. Then, we have carried out some robustness checks
+by varying the bandwidth, the kernel, or the polynomial degree. Here we
+summarize the main results of both exercises, while in the supplementary
+document the reader can find all the estimates.
+
+The first plausibility check employs placebo outcomes to search evidence
+about the presence of an alternative programme using the same scoring
+variable to assign treatments. Leveraging the staggered implementation
+of the AXL treatments, we can estimate pseudo-treatment effects at the
+moment the programme was already implemented but certain individuals had
+not yet participated. Differences at these pretreatment periods (for
+individuals treated at semester \(t \ge 2\)) would inform on possible
+violations of \(\{Y_i(1), Y_i(0)\} \perp\!\!\!\perp (\tilde{S}_i)\) for
+individuals treated at semester \(t=1\). If we focus on the effects at
+the average, the point estimates are small and not statistically
+significant at the usual level. This would support the absence of an
+alternative treatment that might bias the estimation of the AXL effect
+due to a discontinuity in the untreated potential outcome functions.
+Additionally, the documents on the programme design inform that the
+score function was published in November 2017 and the mandate to create
+such function was passed in July 2017
+(\citeproc{ref-veneto2017a}{Government of Veneto 2017a}). This finding
+goes in line with the idea of no alternative treatment at
+\(\tilde{S}_i=c\) before AXL implementation, since other agents did not
+know --at least through open channels-- the score function.
+
+The second plausibility check, the covariate balance analyses, inform us
+about the comparability of active and control groups to bring evidence
+on the unconfoundedness condition. Attending the magnitude of the
+differences , only 1 out of the 52 variables/categories analysed (26 for
+each treatment comparison) presents an imbalance higher than the 0.1
+recommended threshold derived from Stuart et al.
+(\citeproc{ref-stuartetal2013}{2013}) and Austin
+(\citeproc{ref-austin2009}{2009}). Following Rosenbaum
+(\citeproc{ref-rosenbaum2010}{2010}), we also looked at the
+unstandardized mean difference to interpret the size of the problem.
+There is an average difference of one year of age between groups for
+\(D_1\), which corresponds to 0.13 standard deviations. Considering the
+low standardized difference and the practical significance of one year
+for the employment probability during most of the working life, we argue
+that the confounding effect of the tiny difference of age is negligible
+for our conclusions\footnote{As an additional robustness check, we rerun
+  the \(LATE\) analyses controlling for the residual imbalance in those
+  covariates with differences of at least 5 p.p. (or 0.05 standard
+  deviations) and conclusions do not change. Results are available upon
+  request.}.
+
+The robustness checks deal with certain changes in the modelling
+decisions and their effects on the conclusions. The first set of
+analyses preserve the same population of interest. Regarding the
+\(LATE\) results, we have varied two modelling options: bandwidth
+selector (MSE-optimal but allowing different bandwidths at each side of
+the cutoff and a slightly lower common MSE-optimal bandwidth) and
+polynomial degree (1 or 2). Then, we have compared the estimates
+presented in Section~\ref{sec-remploy} with the alternative results. Our
+results on the \(LATE\) are quite robust to the different specifications
+both in magnitude and direction. With the alternative bandwidths, the
+results are almost identical up to the differences in statistical
+significance that might be explained by the distinct power of tests with
+different sample sizes. Concerning the \(LQTE(\tau)\) and \(LATE_j\)
+results, the robustness analyses are less established because the
+estimators have been recently proposed. For the \(LQTE(\tau)\),
+following Qu and Yoon (\citeproc{ref-quyoon2019}{2019}), we have
+re-estimated the models with a new bandwidth selector by choosing the
+second most conservative bandwidth, rather than the most conservative
+(i.e., the smallest). For both comparisons, the results for the median
+are qualitatively equal with only small differences in quantitative
+terms. In all cases the conclusions are preserved. For the \(LATE_j\),
+we have applied a different bandwidth for each category of the outcome
+by transforming the multinomial model to a set of binomial models. The
+qualitative results are preserved and the quantitative estimates are
+almost equal, so the conclusions are robust.
+
+\section{Conclusion}\label{sec-conc}
+
+In this article, we have studied how the intensity of job search
+services influences its employment effects. To do so, we have leveraged
+the discontinuity design of an innovative policy that combines two
+design features for the private provision of public services: vouchers
+(for job search assistance) and performance-based payments (for job
+search intermediation). In this policy, three treatment groups shared
+the access to adult training, but had different available doses of other
+components: group \(A\) (with 7 hours of assistance and 1,500 € for
+intermediation), group \(B\) (with 13 hours of assistance and 2,000 €
+for intermediation), and group \(C\) (with 27 hours of assistance and
+3,000 € for intermediation).
+
+The results indicate that the local effect on the average of days worked
+was null for all semesters in the first comparison (\(B\) vs.~\(A\)) and
+for three out of four semesters in the second comparison (\(C\)
+vs.~\(B\)). In this last case, we did detect a small but positive effect
+during the second semester that later vanishes. We did not find effects
+at the first and third quartile of the distribution of days worked, but
+some changes appeared at the median. For the intermediate-low
+comparison, we detected an approximate increase of around two months at
+the median of the third semester. The high-intermediate comparison
+presented a rise of twenty days at the second semester after treatment
+started. Nonetheless, both effects disappear at the following semesters.
+Lastly, it seems that the different treatment intensities generated
+certain impacts on the employment quality, although these contracts did
+not trigger longer employment episodes. We found a small positive effect
+on the probability of having short temporary contracts as the longest
+employment for the high-intermediate contrast, whereas the
+intermediate-low contrast presented an increase of permanent contracts
+during programme implementation. We also found two important results
+regarding implementation. First, the mechanism that might explain these
+minor employment impacts did not seem to be job search assistance due to
+voucher non-redemption, but job search intermediation. Second, we did
+not detect evidence of cream-skimming or discrimination of hard-to-place
+jobseekers in the access to job search services under the different
+performant payments, which suggests that it is a promising design
+feature.
+
+Our findings have several policy implications. Regarding job search
+assistance, if policymakers wish to ensure that less-employable
+individuals receive more treatment, we have seen that these vouchers do
+not ensure it. In following versions of AXL, vouchers might be designed
+as those usually available in education policies. In these cases, the
+individual may choose the provider, but not the number of hours of
+education. Regarding job search intermediation, the payment
+differentials studied here do not appear sufficient to generate
+sustained employment gains. Nonetheless, it is possible that the
+differences between the payments associated with each group were not
+high or directed enough to cause the desired increase in caseworkers'
+effort.
+
+The limitations of our research are mainly two. Firstly, regression
+discontinuity only identifies the effects for individuals just at the
+threshold of the score. If the impact of the programme was heterogeneous
+as a function of the running variable, our results would not be
+generalizable to individuals far from the cutoffs. Secondly, the
+flexible expenditure of the voucher allowed that different endowments
+did not materialize in remarkably different amounts of assistance
+received. On one side, this might induce us to think the results
+exclusively as the effects of different payment schemes for
+intermediation. On the other side, we could have a more complete view
+and interpret the findings as intention-to-treat effects. This last
+approach understands the lack of voucher redemption as a rejection of
+the assumptions behind the programme design formulated by the
+policymakers.
+
+Future research might reinforce either the impact or the implementation
+analyses of job search services. On the implementation, it would be
+necessary to investigate in greater depth the specific actions carried
+out as job search assistance. As remarked by Hernán and Robins
+(\citeproc{ref-hernanrobins2023}{2023}), it is required to define in a
+precise way the interventions we want to analyze. Nowadays, the public
+employment service lacks detailed information on the actions carried out
+by each specific provider. On the impact, it would be interesting to
+consider control groups made up by individuals that received no
+treatment. Although identification would require harder assumptions, the
+results would complement the view on the worthiness of the programme.
+Lastly, aggregate effects seem quite small, so cost-benefit analyses
+might help to decide the pertinence of this programme.
+
+In sum, our work does not find support to reserve more money to
+treatments of different intensity since it does not seem to generate
+lasting effects on the treated people. Future policy designs might
+consider devoting such money to treating more jobseekers instead of
+increasing the treatment endowment of each participant.
+
+\section*{Statements and
+declarations}\label{statements-and-declarations}
+\addcontentsline{toc}{section}{Statements and declarations}
+
+\textbf{Funding}. The research has been funded by the Ministry of
+Universities of the Government of Spain through the Plan de Formación
+del Profesorado Universitario with reference FPU19/05291. We also
+recognize AI4S fellowship within the ``Generación D'' initiative by
+Red.es, Ministerio para la Transformación Digital y de la Función
+Pública, for talent attraction (C005/24-ED CV1), funded by
+NextGenerationEU through PRTR.
+
+\textbf{Competing interests}. The author has no competing interests to
+declare that are relevant to the content of this article.
+
+\textbf{Data and computer code availability}. The data that support the
+findings of this study are available from Veneto Lavoro, but
+restrictions apply to the availability of these data, which were used
+under license for the current study, and so are not publicly available.
+Please, send an e-mail to Veneto Lavoro
+(osservatorio.mdl@venetolavoro.it) for further details about how other
+researchers can obtain the data and the procedure to request the data.
+All the information needed to proceed from the raw data to the results
+of the paper (including code) is available in a
+\href{https://github.com/ajunquera/moremoney}{GitHub repository}.
+
+\section*{References}\label{references}
+\addcontentsline{toc}{section}{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{1}
+\bibitem[\citeproctext]{ref-aakviketal2005}
+Aakvik A, Heckman JJ, Vytlacil EJ (2005) Estimating treatment effects
+for discrete outcomes when responses to treatment vary: An application
+to {Norwegian} vocational rehabilitation programs. Journal of
+Econometrics 125:15--51.
+https://doi.org/\href{https://doi.org/10.1016/j.jeconom.2004.04.002}{10.1016/j.jeconom.2004.04.002}
+
+\bibitem[\citeproctext]{ref-abadiecattaneo2018}
+Abadie A, Cattaneo MD (2018) Econometric {Methods} for {Program
+Evaluation}. Annual Review of Economics 10:465--503.
+https://doi.org/\href{https://doi.org/10.1146/annurev-economics-080217-053402}{10.1146/annurev-economics-080217-053402}
+
+\bibitem[\citeproctext]{ref-austin2009}
+Austin PC (2009) Using the {Standardized Difference} to {Compare} the
+{Prevalence} of a {Binary Variable Between Two Groups} in {Observational
+Research}. Communications in Statistics - Simulation and Computation
+38:1228--1234.
+https://doi.org/\href{https://doi.org/10.1080/03610910902859574}{10.1080/03610910902859574}
+
+\bibitem[\citeproctext]{ref-barnow2009}
+Barnow BS (2009) Vouchers in {U}.{S}. Vocational training programs: An
+overview of what we have learned. Zeitschrift für ArbeitsmarktForschung
+42:71--84.
+https://doi.org/\href{https://doi.org/10.1007/s12651-009-0007-9}{10.1007/s12651-009-0007-9}
+
+\bibitem[\citeproctext]{ref-brenninkblonk2012}
+Brenninkmeijer V, Blonk RWB (2012) The effectiveness of the {JOBS}
+program among the long-term unemployed: A randomized experiment in the
+{Netherlands}. Health Promotion International 27:220--229.
+https://doi.org/\href{https://doi.org/10.1093/heapro/dar033}{10.1093/heapro/dar033}
+
+\bibitem[\citeproctext]{ref-burgessetal2017}
+Burgess S, Propper C, Ratto M, Tominey E (2017) Incentives in the
+{Public Sector}: {Evidence} from a {Government Agency}. The Economic
+Journal 127:F117--F141.
+https://doi.org/\href{https://doi.org/10.1111/ecoj.12422}{10.1111/ecoj.12422}
+
+\bibitem[\citeproctext]{ref-calonicoetal2017}
+Calonico S, Cattaneo MD, Farrell MH, Titiunik R (2017) Rdrobust:
+{Software} for {Regression-discontinuity Designs}. The Stata Journal:
+Promoting communications on statistics and Stata 17:372--404.
+https://doi.org/\href{https://doi.org/10.1177/1536867X1701700208}{10.1177/1536867X1701700208}
+
+\bibitem[\citeproctext]{ref-calonicoetal2014}
+Calonico S, Cattaneo MD, Titiunik R (2014) Robust {Nonparametric
+Confidence Intervals} for {Regression-Discontinuity Designs}: {Robust
+Nonparametric Confidence Intervals}. Econometrica 82:2295--2326.
+https://doi.org/\href{https://doi.org/10.3982/ECTA11757}{10.3982/ECTA11757}
+
+\bibitem[\citeproctext]{ref-cardetal2018}
+Card D, Kluve J, Weber A (2018) What {Works}? {A Meta Analysis} of
+{Recent Active Labor Market Program Evaluations}. Journal of the
+European Economic Association 16:894--931.
+https://doi.org/\href{https://doi.org/10.1093/jeea/jvx028}{10.1093/jeea/jvx028}
+
+\bibitem[\citeproctext]{ref-carterwhitworth2015}
+Carter E, Whitworth A (2015) Creaming and {Parking} in {Quasi-Marketised
+Welfare-to-Work Schemes}: {Designed Out Of} or {Designed In} to the {UK
+Work Programme}? Journal of Social Policy 44:277--296.
+https://doi.org/\href{https://doi.org/10.1017/S0047279414000841}{10.1017/S0047279414000841}
+
+\bibitem[\citeproctext]{ref-cattaneoetal2024}
+Cattaneo MD, Crump RK, Farrell MH, Feng Y (2024) On {Binscatter}.
+American Economic Review 114:1488--1514.
+https://doi.org/\href{https://doi.org/10.1257/aer.20221576}{10.1257/aer.20221576}
+
+\bibitem[\citeproctext]{ref-cattaneoetal2019}
+Cattaneo MD, Idrobo N, Titiunik R (2019)
+\href{https://doi.org/10.1017/9781108684606}{A {Practical Introduction}
+to {Regression Discontinuity Designs}: {Foundations}}, 1st edn.
+Cambridge University Press
+
+\bibitem[\citeproctext]{ref-cattaneotitiunik2022}
+Cattaneo MD, Titiunik R (2022) Regression {Discontinuity Designs}.
+Annual Review of Economics 14:821--851.
+https://doi.org/\href{https://doi.org/10.1146/annurev-economics-051520-021409}{10.1146/annurev-economics-051520-021409}
+
+\bibitem[\citeproctext]{ref-cheungetal2025}
+Cheung M, Egebark J, Forslund A, Laun L, Rödin M, Vikström J (2025) Does
+{Job Search Assistance Reduce Unemployment}? {Evidence} on {Displacement
+Effects} and {Mechanisms}. Journal of Labor Economics 43:47--81.
+https://doi.org/\href{https://doi.org/10.1086/726384}{10.1086/726384}
+
+\bibitem[\citeproctext]{ref-doerretal2017}
+Doerr A, Fitzenberger B, Kruppe T, Paul M, Strittmatter A (2017)
+Employment and {Earnings Effects} of {Awarding Training Vouchers} in
+{Germany}. ILR Review 70:767--812.
+https://doi.org/\href{https://doi.org/10.1177/0019793916660091}{10.1177/0019793916660091}
+
+\bibitem[\citeproctext]{ref-dongshen2018}
+Dong Y, Shen S (2018) Testing for {Rank Invariance} or {Similarity} in
+{Program Evaluation}. The Review of Economics and Statistics 100:78--85.
+https://doi.org/\href{https://doi.org/10.1162/REST_a_00686}{10.1162/REST\_a\_00686}
+
+\bibitem[\citeproctext]{ref-dykeetal2006}
+Dyke A, Heinrich CJ, Mueser PR, Troske KR, Jeon K-S (2006) The {Effects}
+of {Welfare}-to-{Work Program Activities} on {Labor Market Outcomes}.
+Journal of Labor Economics 24:567--607.
+https://doi.org/\href{https://doi.org/10.1086/504642}{10.1086/504642}
+
+\bibitem[\citeproctext]{ref-eggersetal2024}
+Eggers AC, Tuñón G, Dafoe A (2024) Placebo {Tests} for {Causal
+Inference}. American Journal of Political Science 68:1106--1121.
+https://doi.org/\href{https://doi.org/10.1111/ajps.12818}{10.1111/ajps.12818}
+
+\bibitem[\citeproctext]{ref-engstrometal2012}
+Engström P, Hesselius P, Holmlund B (2012) Vacancy {Referrals}, {Job
+Search}, and the {Duration} of {Unemployment}: {A Randomized
+Experiment}. LABOUR 26:419--435.
+https://doi.org/\href{https://doi.org/10.1111/j.1467-9914.2012.00545.x}{10.1111/j.1467-9914.2012.00545.x}
+
+\bibitem[\citeproctext]{ref-escuderoetal2019}
+Escudero V, Kluve J, López Mourelo E, Pignatti C (2019) Active {Labour
+Market Programmes} in {Latin America} and the {Caribbean}: {Evidence}
+from a {Meta-Analysis}. The Journal of Development Studies
+55:2644--2661.
+https://doi.org/\href{https://doi.org/10.1080/00220388.2018.1546843}{10.1080/00220388.2018.1546843}
+
+\bibitem[\citeproctext]{ref-fougereetal2009}
+Fougère D, Pradel J, Roger M (2009) Does the public employment service
+affect search effort and outcomes? European Economic Review 53:846--869.
+https://doi.org/\href{https://doi.org/10.1016/j.euroecorev.2009.01.006}{10.1016/j.euroecorev.2009.01.006}
+
+\bibitem[\citeproctext]{ref-frolichsperlich2019}
+Frölich M, Sperlich S (2019) Impact evaluation: Treatment effects and
+causal analysis. Cambridge University Press, Cambridge
+
+\bibitem[\citeproctext]{ref-veneto2017a}
+Government of Veneto (2017a) Direttiva per la sperimentazione
+dell'{Assegno} per il lavoro per la ricollocazione di lavoratori
+disoccupati
+
+\bibitem[\citeproctext]{ref-veneto2017b}
+Government of Veneto (2017b) Modello per la profilazione dei destinatari
+dell'{Assegno} per il lavoro
+
+\bibitem[\citeproctext]{ref-veneto2018}
+Government of Veneto (2018) Deliberazione della {Giunta Regionale}:
+{Punto} 73 dell'{ODG} della seduta del 30/04/2018 ({Estratto} del
+verbale)
+
+\bibitem[\citeproctext]{ref-heckmanetal2002}
+Heckman JJ, Heinrich C, Smith J (2002) The {Performance} of {Performance
+Standards}. The Journal of Human Resources 37:778.
+https://doi.org/\href{https://doi.org/10.2307/3069617}{10.2307/3069617}
+
+\bibitem[\citeproctext]{ref-heckmansmith2004}
+Heckman JJ, Smith JA (2004) The {Determinants} of {Participation} in a
+{Social Program}: {Evidence} from a {Prototypical Job Training Program}.
+Journal of Labor Economics 22:243--298.
+https://doi.org/\href{https://doi.org/10.1086/381250}{10.1086/381250}
+
+\bibitem[\citeproctext]{ref-hernanrobins2023}
+Hernán M, Robins JM (2023) Causal inference: {What} if, First edition.
+{Taylor and Francis}, Boca Raton
+
+\bibitem[\citeproctext]{ref-hippwarner2008}
+Hipp L, Warner ME (2008) Market {Forces} for the {Unemployed}? {Training
+Vouchers} in {Germany} and the {USA}. Social Policy \& Administration
+42:77--101.
+https://doi.org/\href{https://doi.org/10.1111/j.1467-9515.2007.00589.x}{10.1111/j.1467-9515.2007.00589.x}
+
+\bibitem[\citeproctext]{ref-huberetal2018}
+Huber M, Lechner M, Strittmatter A (2018) Direct and {Indirect Effects}
+of {Training Vouchers} for the {Unemployed}. Journal of the Royal
+Statistical Society Series A: Statistics in Society 181:441--463.
+https://doi.org/\href{https://doi.org/10.1111/rssa.12279}{10.1111/rssa.12279}
+
+\bibitem[\citeproctext]{ref-imbenskaly2012}
+Imbens G, Kalyanaraman K (2012) Optimal {Bandwidth Choice} for the
+{Regression Discontinuity Estimator}. The Review of Economic Studies
+79:933--959.
+https://doi.org/\href{https://doi.org/10.1093/restud/rdr043}{10.1093/restud/rdr043}
+
+\bibitem[\citeproctext]{ref-kingzen2006}
+King G, Zeng L (2006) The {Dangers} of {Extreme Counterfactuals}.
+Political Analysis 14:131--159.
+https://doi.org/\href{https://doi.org/10.1093/pan/mpj004}{10.1093/pan/mpj004}
+
+\bibitem[\citeproctext]{ref-koningheinrich2013}
+Koning P, Heinrich CJ (2013) Cream-{Skimming}, {Parking} and {Other
+Intended} and {Unintended Effects} of {High-Powered}, {Performance-Based
+Contracts}: {Cream-Skimming}, {Parking} and {Other Intended} and
+{Unintended Effects}. Journal of Policy Analysis and Management
+32:461--483.
+https://doi.org/\href{https://doi.org/10.1002/pam.21695}{10.1002/pam.21695}
+
+\bibitem[\citeproctext]{ref-linfanteetal2019}
+Linfante G, Radicchia D, Stocco P, Toti E (2019) Rapporto di valutazione
+della sperimentazione dell'assegno di ricollocazione. ANPAL
+
+\bibitem[\citeproctext]{ref-liuetal2014}
+Liu S, Huang JL, Wang M (2014) Effectiveness of job search
+interventions: {A} meta-analytic review. Psychological Bulletin
+140:1009--1041.
+https://doi.org/\href{https://doi.org/10.1037/a0035923}{10.1037/a0035923}
+
+\bibitem[\citeproctext]{ref-manskipepper2018}
+Manski CF, Pepper JV (2018) How {Do Right-to-Carry Laws Affect Crime
+Rates}? {Coping} with {Ambiguity Using Bounded-Variation Assumptions}.
+Review of Economics and Statistics 100:232--244.
+https://doi.org/\href{https://doi.org/10.1162/REST_a_00689}{10.1162/REST\_a\_00689}
+
+\bibitem[\citeproctext]{ref-martinsonetal2019}
+Martinson K, Harvill E, Litwok D, Schwartz D, Rosa SMDL, Saunders C,
+Bell S (2019) Implementation and {Relative Impacts} of {Two Job Search
+Assistance Programs} in {New York City}. {Office of Planning, Research,
+and Evaluation, Administration for Children and Families, U.S.
+Department of Health and Human Services}, Washington, DC
+
+\bibitem[\citeproctext]{ref-meyer1995}
+Meyer BD (1995) \href{https://www.jstor.org/stable/2728911}{Lessons from
+the {U}.{S}. Unemployment insurance experiments}. Journal of Economic
+Literature 33:91--131
+
+\bibitem[\citeproctext]{ref-munozdebustilloetal2011}
+Muñoz De Bustillo R, Fernández-Macías E, Antón J-I, Esteve F (2011)
+\href{https://doi.org/10.4337/9781849805919}{Measuring {More} than
+{Money}: {The Social Economics} of {Job Quality}}. Edward Elgar
+Publishing
+
+\bibitem[\citeproctext]{ref-peietal2022}
+Pei Z, Lee DS, Card D, Weber A (2022) Local {Polynomial Order} in
+{Regression Discontinuity Designs}. Journal of Business \& Economic
+Statistics 40:1259--1267.
+https://doi.org/\href{https://doi.org/10.1080/07350015.2021.1920961}{10.1080/07350015.2021.1920961}
+
+\bibitem[\citeproctext]{ref-quyoon2015}
+Qu Z, Yoon J (2015) Nonparametric estimation and inference on
+conditional quantile processes. Journal of Econometrics 185:1--19.
+https://doi.org/\href{https://doi.org/10.1016/j.jeconom.2014.10.008}{10.1016/j.jeconom.2014.10.008}
+
+\bibitem[\citeproctext]{ref-quyoon2019}
+Qu Z, Yoon J (2019) Uniform {Inference} on {Quantile Effects} under
+{Sharp Regression Discontinuity Designs}. Journal of Business \&
+Economic Statistics 37:625--647.
+https://doi.org/\href{https://doi.org/10.1080/07350015.2017.1407323}{10.1080/07350015.2017.1407323}
+
+\bibitem[\citeproctext]{ref-rosenbaum2010}
+Rosenbaum PR (2010)
+\href{https://doi.org/10.1007/978-1-4419-1213-8}{Design of
+{Observational Studies}}. Springer New York, New York, NY
+
+\bibitem[\citeproctext]{ref-rubin2007}
+Rubin DB (2007) The design {\emph{versus}} the analysis of observational
+studies for causal effects: Parallels with the design of randomized
+trials. Statistics in Medicine 26:20--36.
+https://doi.org/\href{https://doi.org/10.1002/sim.2739}{10.1002/sim.2739}
+
+\bibitem[\citeproctext]{ref-stuartetal2013}
+Stuart EA, Lee BK, Leacy FP (2013) Prognostic score--based balance
+measures can be a useful diagnostic for propensity score methods in
+comparative effectiveness research. Journal of Clinical Epidemiology
+66:S84--S90.e1.
+https://doi.org/\href{https://doi.org/10.1016/j.jclinepi.2013.01.013}{10.1016/j.jclinepi.2013.01.013}
+
+\bibitem[\citeproctext]{ref-titiunik2021}
+Titiunik R (2021)
+\href{https://doi.org/10.1017/9781108777919.008}{Natural {Experiments}}.
+In: Druckman J, Green DP (eds) Advances in {Experimental Political
+Science}, 1st edn. Cambridge University Press, pp 103--129
+
+\bibitem[\citeproctext]{ref-vandenbergetal2019}
+Van Den Berg GJ, Hofmann B, Uhlendorff A (2019) Evaluating {Vacancy
+Referrals} and the {Roles} of {Sanctions} and {Sickness Absence}*. The
+Economic Journal uez032.
+https://doi.org/\href{https://doi.org/10.1093/ej/uez032}{10.1093/ej/uez032}
+
+\bibitem[\citeproctext]{ref-voorenetal2019}
+Vooren M, Haelermans C, Groot W, Maassen Van Den Brink H (2019) The
+{Effectiveness} of {Active Labor Market Policies}: {A Meta}-{Analysis}.
+Journal of Economic Surveys 33:125--149.
+https://doi.org/\href{https://doi.org/10.1111/joes.12269}{10.1111/joes.12269}
+
+\bibitem[\citeproctext]{ref-xu2017}
+Xu K-L (2017) Regression discontinuity with categorical outcomes.
+Journal of Econometrics 201:1--18.
+https://doi.org/\href{https://doi.org/10.1016/j.jeconom.2017.07.004}{10.1016/j.jeconom.2017.07.004}
+
+\bibitem[\citeproctext]{ref-zanellasalomone2025}
+Zanella G, Salomone R (2025) Incentive-based active labor market
+programs: {Insights} from policy experimentation in {Italy}. Labour
+Economics 93:102687.
+https://doi.org/\href{https://doi.org/10.1016/j.labeco.2025.102687}{10.1016/j.labeco.2025.102687}
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
